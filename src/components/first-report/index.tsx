@@ -1,10 +1,10 @@
-// import { useToSvg } from "@hugocxl/react-to-image";
-
 import { cn } from "@/lib/utils";
 import PaperPrimitive from "../paper-primitive";
 import { useStore } from "@nanostores/react";
-import { $paperWdith } from "@/lib/store";
-import { TruckIcon } from "lucide-react";
+import { $paperWdith } from "@/store";
+import { ListPlusIcon, TruckIcon } from "lucide-react";
+import { $reportData, Table, addTableRow } from "./store";
+import { Button } from "../ui/button";
 
 interface Props {
   className?: string;
@@ -12,6 +12,8 @@ interface Props {
 
 export function FirstReport({ className }: Props) {
   const paperWidth = useStore($paperWdith);
+
+  const { tables } = useStore($reportData);
 
   return (
     <PaperPrimitive
@@ -26,10 +28,13 @@ export function FirstReport({ className }: Props) {
 
       <Intro />
 
-      <div className="mt-8 w-[520px] mx-auto flex flex-col items-center">
-        <OrderTable />
-        <div className="my-6"></div>
-        <OrderTable />
+      <div className="mt-8 w-[580px] mx-auto flex flex-col items-center">
+        {tables?.map((table, index) => (
+          <div key={index}>
+            <OrderTable data={table} index={index} />
+            <div className="my-6"></div>
+          </div>
+        ))}
       </div>
 
       <div className="my-auto h-12"></div>
@@ -40,24 +45,30 @@ export function FirstReport({ className }: Props) {
 }
 
 function Header() {
+  const { title, subtitle, headerLogoUrl } = useStore($reportData);
+
   return (
     <header className="px-4 pt-3">
       <div className="flex justify-between items-end border-b-2 border-primary">
         <div className="w-full">
           <p className="text-sm font-bold text-primary -mb-1">
-            <input type="text" defaultValue={"2024 一季度"} />
+            <input type="text" defaultValue={subtitle} />
           </p>
           <p className="text-xl font-extrabold text-primary w-full">
             <input
               type="text"
-              defaultValue={"无锡总部报价清单"}
+              defaultValue={title}
               className="tracking-wider w-full"
             />
           </p>
         </div>
 
         <figure className="h-12 overflow-hidden shrink-0">
-          <img src="/表头-LOGO.png" className="h-full w-auto" alt="" />
+          <img
+            src={headerLogoUrl ?? "./images/表头-LOGO.png"}
+            className="h-full w-auto"
+            alt=""
+          />
         </figure>
       </div>
     </header>
@@ -65,13 +76,15 @@ function Header() {
 }
 
 function Intro() {
+  const { heading, caption } = useStore($reportData);
+
   return (
     <div className="flex flex-col items-center w-full">
       <div className="my-6"></div>
       <h2 className="text-center text-2xl font-semibold w-full">
         <input
           type="text"
-          defaultValue={"报单联系 17165259999 (微信同号)"}
+          defaultValue={heading}
           className="w-full text-center"
         />
       </h2>
@@ -80,9 +93,7 @@ function Intro() {
 
       <p className="w-[460px]">
         <textarea
-          defaultValue={
-            "2024-01-22 起，名品收购报价（增加杭州分部，所有分部只接上门面交现结，一手交钱，一手交货，不允许寄存、邮寄）"
-          }
+          defaultValue={caption}
           className="w-full text-sm font-bold text-center h-[5em] resize-none"
         />
       </p>
@@ -91,6 +102,8 @@ function Intro() {
 }
 
 function Footer() {
+  const { address, phone, footerLogoUrl } = useStore($reportData);
+
   return (
     <footer className="bg-primary text-primary-foreground py-4 px-6">
       <section className="text-xs pl-6">
@@ -106,9 +119,7 @@ function Footer() {
           <span className="mr-2 shrink-0 font-bold">收货地址</span>
           <input
             type="text"
-            defaultValue={
-              "江苏省无锡市  新吴区珠江路 2 号  市政办公楼 3 楼  货者网•名品寄卖"
-            }
+            defaultValue={address}
             className="bg-transparent w-full"
           />
         </p>
@@ -116,87 +127,107 @@ function Footer() {
           <span className="mr-2 shrink-0 font-bold">联系电话</span>
           <input
             type="text"
-            defaultValue={"寄送货品说明"}
+            defaultValue={phone}
             className="bg-transparent w-full"
           />
         </p>
-        <p className="my-1 flex items-center">
-          <div className="flex">
+        <div className="my-1 flex items-center">
+          <p className="flex">
             <span className="mr-2 shrink-0 font-bold">寄件人称呼</span>
             <input
               type="text"
               defaultValue={"(你的名字)"}
               className="bg-transparent w-full"
             />
-          </div>
-          <div className="flex">
+          </p>
+          <p className="flex">
             <span className="mr-2 shrink-0 font-bold">寄件人联系方式</span>
             <input
               type="text"
               defaultValue={"(你的手机号码)"}
               className="bg-transparent w-full"
             />
-          </div>
-        </p>
+          </p>
+        </div>
       </section>
 
       <figure className="flex justify-center mt-10 mb-8">
-        <img src="/页脚-LOGO.png" className="h-14 w-auto" alt="" />
+        <img
+          src={footerLogoUrl ?? "./images/页脚-LOGO.png"}
+          className="h-14 w-auto"
+          alt=""
+        />
       </figure>
     </footer>
   );
 }
 
-function OrderTable() {
+function OrderTable({
+  data,
+  index: tableIndex,
+}: {
+  data: Table;
+  index: number;
+}) {
   return (
-    <article className="w-full flex flex-col gap-y-1">
-      <header className="grid grid-cols-6 gap-1">
-        <p className="col-span-4 h-8 text-sm font-semibold">
-          <input
-            type="text"
-            defaultValue={"文娱手办"}
-            className="w-full h-full pl-4 text-left text-secondary bg-primary"
-          />
-        </p>
-        <p className="col-span-1 h-8 text-sm">
-          <input
-            type="text"
-            defaultValue={"收购单价"}
-            className="w-full h-full text-center text-primary-foreground bg-primary"
-          />
-        </p>
-        <p className="col-span-1 h-8 text-sm">
-          <input
-            type="text"
-            defaultValue={"需求总数"}
-            className="w-full h-full text-center text-primary-foreground bg-primary"
-          />
-        </p>
+    <article className="w-full flex flex-col gap-y-1 px-6 [&>header>button]:hover:flex">
+      <header className="grid grid-cols-6 gap-1 relative">
+        {data?.headings?.map((heading, index) => (
+          <p
+            key={index}
+            className={cn(
+              "h-8 text-sm",
+              index === 0 ? "col-span-4 font-semibold" : "col-span-1"
+            )}
+          >
+            <input
+              type="text"
+              defaultValue={heading}
+              className={cn(
+                "w-full h-full bg-primary",
+                index === 0
+                  ? "pl-4 text-secondary text-left"
+                  : "text-primary-foreground text-center"
+              )}
+            />
+          </p>
+        ))}
+
+        <Button
+          size={"icon"}
+          variant={"ghost"}
+          className="absolute -right-11 -top-1 hidden"
+          onClick={() => addTableRow(tableIndex)}
+        >
+          <ListPlusIcon className="size-4" />
+        </Button>
       </header>
 
-      <section className="grid grid-cols-6 gap-1">
-        <p className="col-span-4 text-sm font-semibold">
-          <input
-            type="text"
-            defaultValue={"葫芦娃盲盒"}
-            className="w-full pl-4 text-left text-primary leading-8 border-b-2 border-primary"
-          />
-        </p>
-        <p className="col h-8 text-sm">
-          <input
-            type="text"
-            defaultValue={"2789￥"}
-            className="w-full text-center text-primary leading-8 border-b-2 border-primary"
-          />
-        </p>
-        <p className="col h-8 text-sm">
-          <input
-            type="text"
-            defaultValue={"200个"}
-            className="w-full text-center text-primary leading-8 border-b-2 border-primary"
-          />
-        </p>
-      </section>
+      {data?.rows?.map((row, index) => (
+        <section className="grid grid-cols-6 gap-1" key={index}>
+          <p className="col-span-4 text-sm font-semibold">
+            <input
+              type="text"
+              defaultValue={row.name}
+              className="w-full pl-4 text-left text-primary leading-8 border-b-2 border-primary"
+            />
+          </p>
+          <p className="col h-8 text-sm">
+            <input
+              type="text"
+              defaultValue={row.price}
+              className="w-full text-center text-primary leading-8 border-b-2 border-primary"
+            />
+          </p>
+          <p className="col h-8 text-sm">
+            <input
+              type="text"
+              defaultValue={row.number}
+              className="w-full text-center text-primary leading-8 border-b-2 border-primary"
+            />
+          </p>
+        </section>
+      ))}
     </article>
   );
 }

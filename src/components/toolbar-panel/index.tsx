@@ -3,7 +3,7 @@ import { useToJpeg } from "@hugocxl/react-to-image";
 import { ImageDownIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useStore } from "@nanostores/react";
-import { $paperNode, $paperScale, scaleItems } from "@/lib/store";
+import { $$paperFilename, $paperNode, $paperScale, scaleItems } from "@/store";
 import { useEffect } from "react";
 import { downloadFromData } from "@/lib/utils";
 import { OptionsSelect } from "../form-base";
@@ -11,11 +11,11 @@ import { OptionsSelect } from "../form-base";
 export default function ToolbarPanel() {
   const paperNode = useStore($paperNode);
   const scale = useStore($paperScale);
+  const filename = useStore($$paperFilename);
 
   const [, convertToJpeg, ref] = useToJpeg<HTMLDivElement>({
     onSuccess: (data) => {
-      console.log(data);
-      downloadFromData(data);
+      downloadFromData(data, filename);
     },
   });
 

@@ -4,7 +4,7 @@ import {
   $propertyPanelValue,
   propertyPanelItems,
   switchPropertyPanelValue,
-} from "@/lib/store";
+} from "@/store";
 import { useStore } from "@nanostores/react";
 import { CodeSquareIcon, InfoIcon, Settings2Icon } from "lucide-react";
 import OptionsTab from "./options-tab";

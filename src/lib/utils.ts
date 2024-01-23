@@ -11,7 +11,8 @@ export function downloadFromData(data: string, filename?: string) {
   const { ext } =
     data.match(/^data:image\/(?<ext>(png|jpe?g|svg)).*;/)?.groups ?? {};
 
-  link.download = filename ?? "未命名." + ext ?? "错误格式";
+  link.download =
+    filename?.replace(/\{ext\}/g, ext) ?? "未命名." + ext ?? "错误格式";
   link.href = data;
 
   link.click();

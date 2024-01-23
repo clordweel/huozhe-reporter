@@ -1,7 +1,8 @@
-import { $paperNode } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { useStore } from "@nanostores/react";
-import { $paperScale } from "@/lib/store";
+import { $paperScale, setPaperNode } from "@/store";
+import { useRef } from "react";
+import { useMount } from "react-use";
 
 interface Props {
   className?: string;
@@ -11,11 +12,16 @@ interface Props {
 
 export default function PaperPrimitive({ children, className, style }: Props) {
   const scale = useStore($paperScale);
+
+  const ref = useRef(null);
+
+  useMount(() => {
+    ref.current && setPaperNode(ref.current);
+  });
+
   return (
     <div
-      ref={(node) => {
-        $paperNode.set(node);
-      }}
+      ref={ref}
       className={cn(
         className,
         {
