@@ -1,10 +1,11 @@
 import { FirstReport } from "../first-report";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import PaperPrimitive from "../paper-primitive";
 
 export default function PaperPanel() {
   return (
     <ScrollArea className="w-full h-[var(--paper-panel-height)]">
-      <div
+      <PaperPrimitive
         className="w-full flex items-start justify-center p-2"
         style={{
           backgroundImage:
@@ -14,7 +15,7 @@ export default function PaperPanel() {
         }}
       >
         <FirstReport className="shadow-lg" />
-      </div>
+      </PaperPrimitive>
     </ScrollArea>
   );
 }

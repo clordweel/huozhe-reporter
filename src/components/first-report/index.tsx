@@ -7,12 +7,7 @@ interface Props {
 }
 
 export function FirstReport({ className }: Props) {
-  // const [, convertToSvg, ref] = useToSvg<HTMLDivElement>({
-  //     onSuccess: (data) => {
-  //       console.log(data);
-  //       // downloadFromData(data)
-  //     },
-  //   });
+  
   // ...
 
   const width = 400;
