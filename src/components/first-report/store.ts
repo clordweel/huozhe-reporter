@@ -11,6 +11,7 @@ type Row = {
 };
 
 export type Table = {
+  tip?: string;
   headings: string[];
   rows: Row[];
 };

@@ -32,7 +32,7 @@ export function FirstReport({ className }: Props) {
         {tables?.map((table, index) => (
           <div key={index}>
             <OrderTable data={table} index={index} />
-            <div className="my-6"></div>
+            <div className="my-8"></div>
           </div>
         ))}
       </div>
@@ -171,6 +171,8 @@ function OrderTable({
 }) {
   return (
     <article className="w-full flex flex-col gap-y-1 px-6 [&>header>button]:hover:flex">
+      <p className="text-center text-sm">{data.tip}</p>
+
       <header className="grid grid-cols-6 gap-1 relative">
         {data?.headings?.map((heading, index) => (
           <p

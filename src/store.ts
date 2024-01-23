@@ -93,9 +93,25 @@ export const scaleItems: ValueItem[] = [
 
 export const $paperScale = atom<string>("100");
 
+export const resetPaperScale = action(
+  $paperScale,
+  "reset.paper.scale",
+  (store) => {
+    store.set("100");
+  }
+);
+
+export const imageTypeItems: ValueItem[] = [
+  { value: "jpeg", label: "JPEG" },
+  { value: "png", label: "PNG" },
+];
+
 export type PaperOptions = {
   name?: string;
   suffix?: string;
+
+  imageType: "jpeg" | "png";
+
   backgroundColor?: string;
   shadow?: boolean;
   shadowColor?: string;
@@ -105,22 +121,26 @@ export type PaperOptions = {
 export const defaultSuffix = "-{date}.{ext}";
 export const defaultName = "未命名报表";
 
-export const $paperOptions = map<PaperOptions>({});
+export const $paperOptions = map<PaperOptions>({ imageType: "png" });
 
 export const $$paperFilename = computed(
   $paperOptions,
-  ({ name = defaultName, suffix = defaultSuffix }) => {
+  ({ name = defaultName, imageType, suffix = defaultSuffix }) => {
     const data = {
-      // time: Date.now().toString(),
       date: dayjs().format("YYYY-MM-DD"),
       size: $$paperSizeText.get(),
+      ext: imageType,
     };
 
     const extra = suffix.replace(
-      /\{(time|date|size)\}/g,
+      /\{(date|size|ext)\}/g,
       (_, v: keyof typeof data) => (v ? data[v] : v)
     );
 
     return `${name}${extra}`;
   }
 );
+
+$$paperFilename.listen((name) => {
+  document.head.querySelector("title")!.textContent = `报表设计: ${name}`;
+});

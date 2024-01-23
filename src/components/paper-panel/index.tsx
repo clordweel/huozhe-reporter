@@ -7,7 +7,6 @@ interface Props {
 export default function PaperPanel({ children }: Props) {
   return (
     <ScrollArea
-    
       className="w-[var(--paper-panel-width)] h-[var(--paper-panel-height)]"
       style={{
         backgroundImage:
