@@ -1,6 +1,6 @@
 import { useToJpeg, useToPng } from "@hugocxl/react-to-image";
 
-import { ImageDownIcon } from "lucide-react";
+import { FileCode2Icon, FileInputIcon, ImageDownIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useStore } from "@nanostores/react";
 import {
@@ -8,13 +8,23 @@ import {
   $paperNode,
   $paperOptions,
   $paperScale,
+  exportJSON,
   imageTypeItems,
+  importJSON,
   resetPaperScale,
   scaleItems,
 } from "@/store";
 import { useCallback, useEffect } from "react";
 import { downloadFromData } from "@/lib/utils";
 import { OptionsSelect } from "../form-base";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 export default function ToolbarPanel() {
   const paperNode = useStore($paperNode);
@@ -51,8 +61,52 @@ export default function ToolbarPanel() {
     }
   }, [convertToJpeg, convertToPng, options.imageType]);
 
+  const importPaper = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    async (file) => {
+      importJSON(await file.target.files?.[0].text());
+    },
+    []
+  );
+  const exportPaper = useCallback(() => {
+    exportJSON();
+  }, []);
+
   return (
     <div className="px-2 flex w-full items-center">
+      <TooltipProvider>
+        <div className="flex gap-2">
+          <Tooltip>
+            <TooltipTrigger className="flex gap-1" asChild>
+              <Button size={"icon"} variant={"ghost"}>
+                <Label htmlFor="import_data_file" className="cursor-pointer">
+                  <FileInputIcon className="size-6" />
+                </Label>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>导入报表</p>
+            </TooltipContent>
+          </Tooltip>
+          <Input
+            id={"import_data_file"}
+            type="file"
+            className="hidden"
+            multiple={false}
+            onInput={importPaper}
+          />
+          <Tooltip>
+            <TooltipTrigger className="flex gap-1" asChild>
+              <Button size={"icon"} variant={"ghost"} onClick={exportPaper}>
+                <FileCode2Icon className="size-6" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>导出 JSON</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </TooltipProvider>
+
       <div className="mx-auto"></div>
 
       <OptionsSelect

@@ -1,8 +1,8 @@
 import { ambiguous } from "@/lib/utils";
-import { action, map, onMount } from "nanostores";
+import { action, map, onMount, onSet } from "nanostores";
 import { ofetch } from "ofetch";
 import { toast } from "../ui/use-toast";
-import { $paperOptions } from "@/store";
+import { $exportData, $importData, $paperOptions } from "@/store";
 
 type Row = {
   name: string;
@@ -17,6 +17,8 @@ export type Table = {
 };
 
 type Data = {
+  updated?: number; // 更新时间戳
+
   title: string;
   subtitle: string;
 
@@ -34,6 +36,14 @@ type Data = {
 
 export const $reportData = map<Data>();
 
+onSet($reportData, async ({ newValue: data }) => {
+  $exportData.set(data);
+});
+
+onSet($importData, ({ newValue: data }) => {
+  $reportData.set(data as Data);
+});
+
 export const addTableRow = action(
   $reportData,
   "add.table.row",
@@ -48,6 +58,24 @@ export const addTableRow = action(
         number: "",
       },
     ];
+
+    store.setKey("tables", [...tables]);
+  }
+);
+
+export const setTableRow = action(
+  $reportData,
+  "set.table.row",
+  (
+    store,
+    tableIndex: number,
+    rowIndex: number,
+    key: "name" | "price" | "number",
+    value: string
+  ) => {
+    const tables = store.get().tables;
+
+    tables[tableIndex].rows[rowIndex][key] = value;
 
     store.setKey("tables", [...tables]);
   }

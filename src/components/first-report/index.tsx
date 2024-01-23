@@ -3,7 +3,7 @@ import PaperPrimitive from "../paper-primitive";
 import { useStore } from "@nanostores/react";
 import { $paperWdith } from "@/store";
 import { ListPlusIcon, TruckIcon } from "lucide-react";
-import { $reportData, Table, addTableRow } from "./store";
+import { $reportData, Table, addTableRow, setTableRow } from "./store";
 import { Button } from "../ui/button";
 
 interface Props {
@@ -52,13 +52,22 @@ function Header() {
       <div className="flex justify-between items-end border-b-2 border-primary">
         <div className="w-full">
           <p className="text-sm font-bold text-primary -mb-1">
-            <input type="text" defaultValue={subtitle} />
+            <input
+              type="text"
+              defaultValue={subtitle}
+              onInput={(e) =>
+                $reportData.setKey("subtitle", e.currentTarget.value)
+              }
+            />
           </p>
           <p className="text-xl font-extrabold text-primary w-full">
             <input
               type="text"
               defaultValue={title}
               className="tracking-wider w-full"
+              onInput={(e) =>
+                $reportData.setKey("title", e.currentTarget.value)
+              }
             />
           </p>
         </div>
@@ -86,6 +95,7 @@ function Intro() {
           type="text"
           defaultValue={heading}
           className="w-full text-center"
+          onInput={(e) => $reportData.setKey("heading", e.currentTarget.value)}
         />
       </h2>
 
@@ -95,6 +105,7 @@ function Intro() {
         <textarea
           defaultValue={caption}
           className="w-full text-sm font-bold text-center h-[5em] resize-none"
+          onInput={(e) => $reportData.setKey("caption", e.currentTarget.value)}
         />
       </p>
     </div>
@@ -121,6 +132,9 @@ function Footer() {
             type="text"
             defaultValue={address}
             className="bg-transparent w-full"
+            onInput={(e) =>
+              $reportData.setKey("address", e.currentTarget.value)
+            }
           />
         </p>
         <p className="my-1 flex items-center">
@@ -129,6 +143,7 @@ function Footer() {
             type="text"
             defaultValue={phone}
             className="bg-transparent w-full"
+            onInput={(e) => $reportData.setKey("phone", e.currentTarget.value)}
           />
         </p>
         <div className="my-1 flex items-center">
@@ -212,6 +227,9 @@ function OrderTable({
               type="text"
               defaultValue={row.name}
               className="w-full pl-4 text-left text-primary leading-8 border-b-2 border-primary"
+              onInput={(e) =>
+                setTableRow(tableIndex, index, "name", e.currentTarget.value)
+              }
             />
           </p>
           <p className="col h-8 text-sm">
@@ -219,6 +237,9 @@ function OrderTable({
               type="text"
               defaultValue={row.price}
               className="w-full text-center text-primary leading-8 border-b-2 border-primary"
+              onInput={(e) =>
+                setTableRow(tableIndex, index, "price", e.currentTarget.value)
+              }
             />
           </p>
           <p className="col h-8 text-sm">
@@ -226,6 +247,9 @@ function OrderTable({
               type="text"
               defaultValue={row.number}
               className="w-full text-center text-primary leading-8 border-b-2 border-primary"
+              onInput={(e) =>
+                setTableRow(tableIndex, index, "number", e.currentTarget.value)
+              }
             />
           </p>
         </section>

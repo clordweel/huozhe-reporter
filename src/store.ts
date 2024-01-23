@@ -3,7 +3,8 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
-import { nextTick } from "./lib/utils";
+import { downloadAsFile, nextTick } from "./lib/utils";
+import { toast } from "./components/ui/use-toast";
 
 dayjs.locale("zh-cn");
 dayjs.extend(customParseFormat);
@@ -121,7 +122,9 @@ export type PaperOptions = {
 export const defaultSuffix = "-{date}.{ext}";
 export const defaultName = "未命名报表";
 
-export const $paperOptions = map<PaperOptions>({ imageType: "png" });
+export const $paperOptions = map<PaperOptions>({
+  imageType: "png",
+});
 
 export const $$paperFilename = computed(
   $paperOptions,
@@ -143,4 +146,41 @@ export const $$paperFilename = computed(
 
 $$paperFilename.listen((name) => {
   document.head.querySelector("title")!.textContent = `报表设计: ${name}`;
+});
+
+export const $importData = atom<unknown>();
+export const $exportData = atom<unknown>();
+
+export const importJSON = action(
+  $importData,
+  "import.json",
+  (store, text?: string) => {
+    if (!text) return;
+
+    try {
+      const json = JSON.parse(text);
+      console.log(json);
+
+      const { data, ...options } = json;
+
+      if (!data) throw new Error("数据为空");
+
+      store.set(data);
+
+      $paperOptions.set(options);
+    } catch (error) {
+      toast({
+        title: "导入失败",
+        description: `${error}`,
+        variant: "destructive",
+      });
+    }
+  }
+);
+
+export const exportJSON = action($paperOptions, "export.json", (store) => {
+  const options = store.get();
+  const json = JSON.stringify({ ...options, data: $exportData.get() });
+
+  downloadAsFile(json, `${options.name}.json`);
 });

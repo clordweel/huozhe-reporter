@@ -18,6 +18,18 @@ export function downloadFromData(data: string, filename?: string) {
   link.click();
 }
 
+export function downloadAsFile(
+  content: string,
+  filename: string,
+  contentType = "text/plain"
+) {
+  const link = document.createElement("a");
+  const file = new Blob([content], { type: contentType });
+  link.href = URL.createObjectURL(file);
+  link.download = filename;
+  link.click();
+}
+
 export function ambiguous<T>(
   program: () => T,
   nitpick?: (result: T) => string | void | null | Promise<string | void | null>
