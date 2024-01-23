@@ -12,16 +12,19 @@ interface Props {
 
 export function FirstReport({ className }: Props) {
   const paperWidth = useStore($paperWdith);
-
   const { tables } = useStore($reportData);
 
   return (
     <PaperPrimitive
-      className={cn("shadow-xl font-sans origin-top flex flex-col", className)}
+      className={cn(
+        "shadow-xl font-sans origin-top flex flex-col",
+        "[&_input]:bg-transparent [&_textarea]:bg-transparent",
+        className
+      )}
       style={{
         width: `${paperWidth}px`,
         minHeight: "640px",
-        backgroundColor: "white",
+        backgroundColor: "var(--backgroundColor)",
       }}
     >
       <Header />
@@ -49,9 +52,9 @@ function Header() {
 
   return (
     <header className="px-4 pt-3">
-      <div className="flex justify-between items-end border-b-2 border-primary">
+      <div className="flex justify-between items-end border-b-2 border-[var(--primaryColor)]">
         <div className="w-full">
-          <p className="text-sm font-bold text-primary -mb-1">
+          <p className="text-sm font-bold text-[var(--textColor)] -mb-1">
             <input
               type="text"
               defaultValue={subtitle}
@@ -60,7 +63,7 @@ function Header() {
               }
             />
           </p>
-          <p className="text-xl font-extrabold text-primary w-full">
+          <p className="text-xl font-extrabold text-[var(--primaryColor)] w-full">
             <input
               type="text"
               defaultValue={title}
@@ -72,10 +75,10 @@ function Header() {
           </p>
         </div>
 
-        <figure className="h-12 overflow-hidden shrink-0">
+        <figure className="bg-[var(--primaryColor)] h-12 px-4 flex items-center justify-center overflow-hidden shrink-0">
           <img
             src={headerLogoUrl ?? "./images/表头-LOGO.png"}
-            className="h-full w-auto"
+            className="h-8 w-auto"
             alt=""
           />
         </figure>
@@ -88,7 +91,7 @@ function Intro() {
   const { heading, caption } = useStore($reportData);
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full text-[var(--primaryColor)]">
       <div className="my-6"></div>
       <h2 className="text-center text-2xl font-semibold w-full">
         <input
@@ -116,7 +119,7 @@ function Footer() {
   const { address, phone, footerLogoUrl } = useStore($reportData);
 
   return (
-    <footer className="bg-primary text-primary-foreground py-4 px-6">
+    <footer className="bg-[var(--primaryColor)] text-[var(--backgroundColor)] py-4 px-6">
       <section className="text-xs pl-6">
         <p className="my-1 flex items-center text-lg font-bold -ml-7">
           <TruckIcon className="mr-1 size-6" />
@@ -186,14 +189,16 @@ function OrderTable({
 }) {
   return (
     <article className="w-full flex flex-col gap-y-1 px-6 [&>header>button]:hover:flex">
-      <p className="text-center text-sm">{data.tip}</p>
+      <p className="text-center text-sm text-[var(--primaryColor)]">
+        {data.tip}
+      </p>
 
       <header className="grid grid-cols-6 gap-1 relative">
         {data?.headings?.map((heading, index) => (
           <p
             key={index}
             className={cn(
-              "h-8 text-sm",
+              "h-8 text-sm bg-[var(--primaryColor)]",
               index === 0 ? "col-span-4 font-semibold" : "col-span-1"
             )}
           >
@@ -201,10 +206,10 @@ function OrderTable({
               type="text"
               defaultValue={heading}
               className={cn(
-                "w-full h-full bg-primary",
+                "w-full h-full",
                 index === 0
-                  ? "pl-4 text-secondary text-left"
-                  : "text-primary-foreground text-center"
+                  ? "pl-4 text-[var(--secondaryColor)] text-left"
+                  : "text-[var(--backgroundColor)] text-center"
               )}
             />
           </p>
@@ -226,7 +231,7 @@ function OrderTable({
             <input
               type="text"
               defaultValue={row.name}
-              className="w-full pl-4 text-left text-primary leading-8 border-b-2 border-primary"
+              className="w-full pl-4 text-left text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
               onInput={(e) =>
                 setTableRow(tableIndex, index, "name", e.currentTarget.value)
               }
@@ -236,7 +241,7 @@ function OrderTable({
             <input
               type="text"
               defaultValue={row.price}
-              className="w-full text-center text-primary leading-8 border-b-2 border-primary"
+              className="w-full text-center text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
               onInput={(e) =>
                 setTableRow(tableIndex, index, "price", e.currentTarget.value)
               }
@@ -246,7 +251,7 @@ function OrderTable({
             <input
               type="text"
               defaultValue={row.number}
-              className="w-full text-center text-primary leading-8 border-b-2 border-primary"
+              className="w-full text-center text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
               onInput={(e) =>
                 setTableRow(tableIndex, index, "number", e.currentTarget.value)
               }

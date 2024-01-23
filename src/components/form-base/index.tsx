@@ -220,6 +220,8 @@ export function OptionsImage({
   src?: string | null;
   onChange?: (src: string | null) => void;
 }) {
+  console.log(src);
+
   const onInput: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
     const file = e.target.files?.item(0);
 
@@ -486,11 +488,13 @@ export function OptionsSelect<Value extends string>({
 export function OptionsCode({
   id,
   label,
+  language,
   height = "16rem",
   defaultValue = "",
   value = "",
   onChange,
 }: ItemProps & {
+  language?: string;
   height?: string;
   defaultValue?: string;
   value?: string;
@@ -528,7 +532,7 @@ export function OptionsCode({
 
         <MonacoEditor
           height={height}
-          defaultLanguage="javascript"
+          defaultLanguage={language || "javascript"}
           theme="vs-dark"
           value={code}
           options={{
@@ -536,8 +540,8 @@ export function OptionsCode({
             lineNumbersMinChars: 2,
             fontSize: 12,
             padding: { top: 34 },
-
             wordWrap: "on",
+            readOnly: true,
           }}
           onChange={(v) => onCodeChange(v)}
         />

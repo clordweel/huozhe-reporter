@@ -85,8 +85,8 @@ export default function CodeDialog({
             theme="vs-dark"
             value={code}
             options={{
-              minimap: { enabled: false },
-
+              minimap: { enabled: true },
+              readOnly: true,
               lineNumbersMinChars: 2,
               fontSize: 14,
               wordWrap: "off",

@@ -37,7 +37,6 @@ export const switchPropertyPanelValue = action(
   $propertyPanelValue,
   "switch.options.pabel.value",
   (store, value: string) => {
-    console.log(value);
     if (!value) return;
 
     store.set(value as propertyPanelValue);
@@ -114,6 +113,10 @@ export type PaperOptions = {
   imageType: "jpeg" | "png";
 
   backgroundColor?: string;
+  textColor?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+
   shadow?: boolean;
   shadowColor?: string;
   shadowBlur?: number;
@@ -124,6 +127,10 @@ export const defaultName = "未命名报表";
 
 export const $paperOptions = map<PaperOptions>({
   imageType: "png",
+  backgroundColor: "#ffffff",
+  textColor: "#172645",
+  primaryColor: "#172645",
+  secondaryColor: "#ec7558",
 });
 
 export const $$paperFilename = computed(
@@ -148,8 +155,13 @@ $$paperFilename.listen((name) => {
   document.head.querySelector("title")!.textContent = `报表设计: ${name}`;
 });
 
-export const $importData = atom<unknown>();
-export const $exportData = atom<unknown>();
+export type JSONData = {
+  headerLogoUrl?: string;
+  footerLogoUrl?: string;
+};
+
+export const $importData = map<JSONData>();
+export const $exportData = map<JSONData>();
 
 export const importJSON = action(
   $importData,
@@ -159,7 +171,6 @@ export const importJSON = action(
 
     try {
       const json = JSON.parse(text);
-      console.log(json);
 
       const { data, ...options } = json;
 
