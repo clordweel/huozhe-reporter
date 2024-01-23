@@ -1,4 +1,4 @@
-import EditorPanel from "./components/editor-panel";
+import PaperPanel from "./components/paper-panel";
 import PropertyPanel from "./components/property-panel";
 import ToolbarPanel from "./components/toolbar-panel";
 
@@ -6,7 +6,7 @@ import { cn } from "./lib/utils";
 
 export default function App() {
   const cssVariables = {
-    "--editor-pabel-height": "calc(100dvh - 142px)",
+    "--paper-panel-height": "calc(100dvh - 142px)",
   } as Record<string, string>;
 
   return (
@@ -20,7 +20,7 @@ export default function App() {
           </header>
 
           <main className={cn("col-span-1", "outline outline-1")}>
-            <EditorPanel />
+            <PaperPanel />
           </main>
 
           <aside className={cn("col-span-1", "outline outline-1")}>
