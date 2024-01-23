@@ -50,11 +50,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import MonacoEditor from "@monaco-editor/react";
 import CodeDialog from "./code-dialog";
 
-export function OptionsCaption({ text }: { text: string }) {
+export function OptionsCaption({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) {
   return (
-    <div className="w-full grid grid-cols-3 items-center">
+    <div className={cn("w-full grid grid-cols-3 items-center px-2", className)}>
       <Separator />
-      <h4 className="text-center text-xs">{text}</h4>
+      <h4 className="text-center text-xs text-slate-500">{text}</h4>
       <Separator />
     </div>
   );
@@ -76,7 +82,7 @@ export function OptionsSectionItem({
   const ItemLabel = () =>
     !!label &&
     (!id ? (
-      <div className="text-slate-500 flex-shrink-0 flex text-sm cursor-default">
+      <div className="pl-1 text-slate-500 flex-shrink-0 flex text-sm cursor-default">
         {label}
       </div>
     ) : (
@@ -88,7 +94,7 @@ export function OptionsSectionItem({
   return (
     <section
       className={cn(
-        "px-2 flex gap-2 justify-between relative",
+        "px-2 py-2 flex gap-2 justify-between relative",
         { row: "items-center", col: "flex-col" }[dir]
       )}
     >
@@ -152,7 +158,7 @@ export function OptionsInput({
     <OptionsSectionItem label={label} id={id} tip={tip}>
       <Input
         id={id}
-        className={cn("w-32 h-8", className)}
+        className={cn("w-42 h-8", className)}
         defaultValue={defaultValue}
         max={max}
         min={min}
@@ -439,6 +445,7 @@ export function OptionsSelect<Value extends string>({
   contentClass,
   triggerClass,
   onValueChange,
+  tip,
 }: ItemProps & {
   items: { label: string; value: Value }[];
   value?: Value;
@@ -448,24 +455,23 @@ export function OptionsSelect<Value extends string>({
   onValueChange?: (value: Value) => void;
 }) {
   return (
-    <OptionsSectionItem {...{ label }}>
+    <OptionsSectionItem {...{ label, tip }}>
       <Select
         defaultValue={defaultValue}
         value={value}
         onValueChange={onValueChange}
       >
-        <SelectTrigger className="w-32 h-8 text-xs">
+        <SelectTrigger className={cn("w-32 h-8 text-xs", triggerClass)}>
           <SelectValue
             id={id}
             className={cn(
-              "w-6 justify-start text-slate-400",
+              "w-6 justify-start text-slate-400"
               // !!selected?.value && 'text-slate-800',
-              triggerClass
             )}
             placeholder="..."
           />
         </SelectTrigger>
-        <SelectContent className={cn("w-32 p-0", contentClass)}>
+        <SelectContent className={cn("w-32 min-w-0 p-0", contentClass)}>
           {items.map((item) => (
             <SelectItem key={item.value} value={item.value} className="text-xs">
               {item.label}
@@ -493,10 +499,13 @@ export function OptionsCode({
   const [code, setCode] = useState(value || defaultValue);
   const [open, setOpen] = useState(false);
 
-  const onCodeChange = useCallback((val: string = "") => {
-    setCode(val);
-    onChange?.(val);
-  }, [onChange]);
+  const onCodeChange = useCallback(
+    (val: string = "") => {
+      setCode(val);
+      onChange?.(val);
+    },
+    [onChange]
+  );
 
   return (
     <>

@@ -1,5 +1,7 @@
 import { action, atom } from "nanostores";
 
+export type ValueItem = { value: string; label: string };
+
 export const $paperNode = atom<HTMLDivElement | null>(null);
 
 export type propertyPanelValue = "info" | "options" | "data";
@@ -31,3 +33,16 @@ export const switchPropertyPanelValue = action(
     store.set(value as propertyPanelValue);
   }
 );
+
+export const $paperWdith = atom<number>(640);
+
+export const scaleItems: ValueItem[] = [
+  { value: "150", label: "150%" },
+  { value: "125", label: "125%" },
+  { value: "100", label: "100%" },
+  { value: "90", label: "90%" },
+  { value: "75", label: "75%" },
+  { value: "50", label: "50%" },
+];
+
+export const $paperScale = atom<string>("100");

@@ -16,7 +16,7 @@ export default function PropertyPanel() {
   const value = useStore($propertyPanelValue);
 
   return (
-    <div className="grid gap-4 grid-cols-[48px_1fr] px-2">
+    <div className="grid gap-y-4 grid-cols-[48px_1fr] px-2">
       <header className="col-span-2 px-2 pt-4">
         <h3 className="text-lg font-bold">
           {propertyPanelItems.find((e) => e.value === value)?.label}
@@ -28,21 +28,21 @@ export default function PropertyPanel() {
       <ToggleGroup
         type="single"
         value={value}
-        className="flex flex-col shrink-0"
+        className="flex flex-col gap-1 shrink-0 justify-start"
         onValueChange={switchPropertyPanelValue}
       >
         <ToggleGroupItem value="info" className="size-12">
-          <InfoIcon />
+          <InfoIcon className="size-4" />
         </ToggleGroupItem>
         <ToggleGroupItem value="options" className="size-12">
-          <Settings2Icon />
+          <Settings2Icon className="size-4" />
         </ToggleGroupItem>
         <ToggleGroupItem value="data" className="size-12">
-          <CodeSquareIcon />
+          <CodeSquareIcon className="size-4" />
         </ToggleGroupItem>
       </ToggleGroup>
 
-      <Tabs value={value} orientation={"vertical"} className="w-full px-x">
+      <Tabs value={value} orientation={"vertical"} className="w-full">
         <InfoTab />
         <OptionsTab />
         <DataTab />

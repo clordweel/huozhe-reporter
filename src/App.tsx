@@ -1,3 +1,4 @@
+import { FirstReport } from "./components/first-report";
 import PaperPanel from "./components/paper-panel";
 import PropertyPanel from "./components/property-panel";
 import ToolbarPanel from "./components/toolbar-panel";
@@ -7,6 +8,7 @@ import { cn } from "./lib/utils";
 export default function App() {
   const cssVariables = {
     "--paper-panel-height": "calc(100dvh - 142px)",
+    "--paper-panel-width": "calc(100dvw - 400px)",
   } as Record<string, string>;
 
   return (
@@ -20,7 +22,9 @@ export default function App() {
           </header>
 
           <main className={cn("col-span-1", "outline outline-1")}>
-            <PaperPanel />
+            <PaperPanel>
+              <FirstReport />
+            </PaperPanel>
           </main>
 
           <aside className={cn("col-span-1", "outline outline-1")}>
