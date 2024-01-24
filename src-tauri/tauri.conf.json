@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "货者报表设计",
-    "version": "0.3.2"
+    "version": "0.3.4"
   },
   "tauri": {
     "allowlist": {
@@ -60,14 +60,23 @@
       "csp": ""
     },
     "updater": {
-      "active": false
+      "active": true,
+      "endpoints": [
+        "https://github.com/clordweel/huozhe-reporter/releases/download/v{{current_version}}/huozhe-reporter-{{current_version}}_x64-setup.exe"
+      ],
+      "dialog": true,
+      "windows": {
+        "installMode": "passive",
+        "installerArgs": []
+      },
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDIyNjk4NUJGOTFGNDI0NUMKUldSY0pQU1J2NFZwSXRzUzUwNllxL2Nqd09Mb2JPMHQxa2N0cm10czd5TjhoeVJudCt4VGZDTk0K"
     },
     "windows": [
       {
         "fullscreen": false,
         "height": 900,
         "resizable": true,
-        "title": "货者报表设计 v0.3.2",
+        "title": "货者报表设计 v0.3.4",
         "width": 1200
       }
     ]
