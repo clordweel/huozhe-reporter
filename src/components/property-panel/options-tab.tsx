@@ -1,6 +1,7 @@
 import { TabsContent } from "@radix-ui/react-tabs";
 import {
   OptionsCaption,
+  OptionsCode,
   OptionsColor,
   OptionsImageTauri,
   OptionsInput,
@@ -8,8 +9,14 @@ import {
   OptionsSwitch,
 } from "../form-base";
 import { useStore } from "@nanostores/react";
-import { $exportData, $paperOptions } from "@/store";
+import {
+  $exportData,
+  $paperOptions,
+  defaultStyles,
+  setCustomStyles,
+} from "@/store";
 import { $reportData } from "../first-report/store";
+import { debounce } from "@/lib/utils";
 
 export default function OptionsTab() {
   const {
@@ -20,6 +27,7 @@ export default function OptionsTab() {
     radius,
     border,
     shadow,
+    styles,
   } = useStore($paperOptions);
 
   const { headerLogoUrl, footerLogoUrl } = useStore($exportData);
@@ -27,6 +35,16 @@ export default function OptionsTab() {
   return (
     <TabsContent value="options">
       <div className="w-full flex gap-1 flex-col pt-1">
+        <OptionsCode
+          id=""
+          label="自定义样式"
+          height="12rem"
+          value={styles ?? defaultStyles}
+          language="css"
+          readOnly={false}
+          onChange={debounce(setCustomStyles, 1000)}
+        />
+
         <OptionsCaption text="颜色" />
 
         <OptionsColor

@@ -24,9 +24,9 @@ export default function PaperPanel({ children }: Props) {
         } as Record<string, string>),
       }}
     >
-      <figure className="w-full flex items-start justify-center p-2">
+      <div className="w-full flex items-start justify-center p-2">
         {children}
-      </figure>
+      </div>
 
       <ScrollBar orientation="horizontal" />
     </ScrollArea>

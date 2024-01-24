@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import PaperPrimitive from "../paper-primitive";
 import { useStore } from "@nanostores/react";
-import { $paperWdith } from "@/store";
 import { DeleteIcon, ListPlusIcon, TruckIcon } from "lucide-react";
 import {
   $reportData,
@@ -24,18 +23,10 @@ const Spacing = () => (
 );
 
 export function FirstReport({ className }: Props) {
-  const paperWidth = useStore($paperWdith);
   const { tables } = useStore($reportData);
 
   return (
-    <PaperPrimitive
-      className={cn(className)}
-      style={{
-        width: `${paperWidth}px`,
-        minHeight: "640px",
-        backgroundColor: "var(--backgroundColor)",
-      }}
-    >
+    <PaperPrimitive className={cn("w-full", className)}>
       <Header />
 
       <Intro />
@@ -62,7 +53,7 @@ function Header() {
   const { title, subtitle, headerLogoUrl } = useStore($reportData);
 
   return (
-    <header className="px-4 pt-3">
+    <header className="Header px-4 pt-3">
       <div className="flex justify-between items-end border-b-2 border-[var(--primaryColor)]">
         <div className="w-full">
           <p className="text-sm font-bold text-[var(--textColor)] -mb-1">
@@ -100,7 +91,7 @@ function Intro() {
   const { heading, caption } = useStore($reportData);
 
   return (
-    <div className="flex flex-col items-center w-full text-[var(--primaryColor)]">
+    <div className="Intro flex flex-col items-center w-full text-[var(--primaryColor)]">
       <div className="my-4"></div>
       <h2 className="text-center text-2xl font-semibold w-full">
         <Editable
@@ -129,7 +120,7 @@ function Footer() {
     useStore($reportData);
 
   return (
-    <footer className="bg-[var(--primaryColor)] text-[var(--backgroundColor)] py-4 px-6">
+    <footer className="Footer bg-[var(--primaryColor)] text-[var(--backgroundColor)] py-4 px-6">
       <section className="text-xs pl-6">
         <p className="my-1 flex items-center text-lg font-bold -ml-7">
           <TruckIcon className="mr-1 size-6" />
@@ -201,7 +192,7 @@ function OrderTable({
   index: number;
 }) {
   return (
-    <article className="w-full flex flex-col gap-y-1 px-6">
+    <article className="Table w-full flex flex-col gap-y-1 px-6">
       <Editable
         className="text-center text-sm text-[var(--primaryColor)]"
         value={data.tip}

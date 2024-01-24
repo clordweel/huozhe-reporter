@@ -17,8 +17,8 @@ export default function PropertyPanel() {
   const value = useStore($propertyPanelValue);
 
   return (
-    <div className="grid gap-y-4 grid-cols-[48px_1fr] px-2">
-      <header className="col-span-2 px-2 pt-4">
+    <div className="grid grid-cols-[48px_1fr]">
+      <header className="col-span-2 px-2 pt-4 mb-4">
         <h3 className="text-lg font-bold">
           {propertyPanelItems.find((e) => e.value === value)?.label}
         </h3>
@@ -29,7 +29,7 @@ export default function PropertyPanel() {
       <ToggleGroup
         type="single"
         value={value}
-        className="flex flex-col gap-1 shrink-0 justify-start"
+        className="flex flex-col gap-1 shrink-0 justify-start pt-2"
         onValueChange={switchPropertyPanelValue}
       >
         <ToggleGroupItem value="info" className="size-12">
@@ -43,7 +43,7 @@ export default function PropertyPanel() {
         </ToggleGroupItem>
       </ToggleGroup>
 
-      <ScrollArea className="h-[calc(var(--paper-panel-height)-76px)]">
+      <ScrollArea className="h-[calc(var(--paper-panel-height)-76px)] pt-2 pr-4">
         <Tabs value={value} orientation={"vertical"} className="w-full">
           <InfoTab />
           <OptionsTab />

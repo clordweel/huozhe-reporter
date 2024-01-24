@@ -8,7 +8,7 @@ import {
   defaultSuffix,
 } from "@/store";
 import { useStore } from "@nanostores/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useToPng } from "@hugocxl/react-to-image";
 import { transparentGridStyle } from "@/lib/utils";
 
@@ -28,19 +28,24 @@ export default function InfoTab() {
     },
   });
 
+  const thumbnailListener = useCallback(() => {
+    timeout && clearTimeout(timeout);
+
+    timeout = window.setTimeout(() => {
+      convertToPng();
+      clearTimeout(timeout);
+    }, 300);
+  }, [convertToPng]);
+
   useEffect(() => {
     if (!paperNode) return;
-    pngRef(paperNode);
+    const node = paperNode;
 
-    $exportData.listen(() => {
-      timeout && clearTimeout(timeout);
+    pngRef(node as HTMLDivElement);
 
-      timeout = window.setTimeout(() => {
-        convertToPng();
-        clearTimeout(timeout);
-      }, 200);
-    });
-  }, [convertToPng, paperNode, pngRef]);
+    $exportData.listen(thumbnailListener);
+    $paperOptions.listen(thumbnailListener);
+  }, [convertToPng, paperNode, pngRef, thumbnailListener]);
 
   return (
     <TabsContent value="info">
@@ -66,7 +71,9 @@ export default function InfoTab() {
             className="h-56 w-full flex justify-center items-center"
             style={{ ...transparentGridStyle(5) }}
           >
-            <img src={thumbnail} className="h-full w-auto" alt="" />
+            {thumbnail && (
+              <img src={thumbnail} className="h-full w-auto" alt="" />
+            )}
           </figure>
 
           <span>{sizeText} 像素</span>

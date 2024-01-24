@@ -11,16 +11,19 @@ import {
 import MonacoEditor from "@monaco-editor/react";
 import { CheckIcon, CodeIcon, SaveIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Props {
   height?: string;
   width?: string;
   defaultValue?: string;
+  value?: string;
   onConfirm?: (val?: string) => void;
   onCancel?: (val?: string) => void;
   onChange?: (val?: string) => void;
   open?: boolean;
+  readOnly?: boolean;
+  language?: string;
   onOpenChange?: (val: boolean) => void;
 }
 
@@ -28,18 +31,28 @@ export default function CodeDialog({
   height = "100%",
   width = "100%",
   defaultValue = "// ...",
+  value,
   onConfirm,
   onCancel,
   onChange,
+  readOnly = true,
   open,
   onOpenChange,
+  language,
 }: Props) {
-  const [code, setCode] = useState(defaultValue);
+  const [code, setCode] = useState(value ?? defaultValue);
 
-  const onCodeChange = useCallback((val: string = "") => {
-    setCode(val);
-    onChange?.(val);
-  }, [onChange]);
+  useEffect(() => {
+    setCode(value ?? defaultValue);
+  }, [defaultValue, value]);
+
+  const onCodeChange = useCallback(
+    (val: string = "") => {
+      setCode(val);
+      onChange?.(val);
+    },
+    [onChange]
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -59,34 +72,41 @@ export default function CodeDialog({
 
           <div className="mx-auto" />
 
-          <DialogClose
-            className="!m-0 px-2 flex"
-            onClick={() => onCancel?.(code)}
-          >
-            取消
-          </DialogClose>
+          {!readOnly && (
+            <>
+              <DialogClose
+                className="!m-0 px-2 flex"
+                onClick={() => {
+                  setCode(value ?? defaultValue);
+                  onCancel?.(code);
+                }}
+              >
+                取消
+              </DialogClose>
 
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            className="bg-transparent gap-1 h-8 !mt-0"
-            onClick={() => onConfirm?.(code)}
-          >
-            <SaveIcon className="size-4" />
-            保存
-          </Button>
+              <Button
+                size={"sm"}
+                variant={"outline"}
+                className="bg-transparent gap-1 h-8 !mt-0"
+                onClick={() => onConfirm?.(code)}
+              >
+                <SaveIcon className="size-4" />
+                保存
+              </Button>
+            </>
+          )}
         </DialogHeader>
 
         <div className="relative">
           <MonacoEditor
             height={height}
             width={width}
-            defaultLanguage="javascript"
+            defaultLanguage={language ?? "javascript"}
             theme="vs-dark"
             value={code}
             options={{
               minimap: { enabled: true },
-              readOnly: true,
+              readOnly,
               lineNumbersMinChars: 2,
               fontSize: 14,
               wordWrap: "off",

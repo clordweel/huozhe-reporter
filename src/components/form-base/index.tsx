@@ -12,7 +12,7 @@ import {
   InfoIcon,
   XIcon,
 } from "lucide-react";
-import { useState, type ReactNode, useCallback } from "react";
+import { useState, type ReactNode, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -580,17 +580,23 @@ export function OptionsCode({
   language,
   height = "16rem",
   defaultValue = "",
+  readOnly = true,
   value = "",
   onChange,
 }: ItemProps & {
   language?: string;
   height?: string;
   defaultValue?: string;
+  readOnly?: boolean;
   value?: string;
   onChange?: (val: string) => void;
 }) {
   const [code, setCode] = useState(value || defaultValue);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setCode(value);
+  }, [value]);
 
   const onCodeChange = useCallback(
     (val: string = "") => {
@@ -630,7 +636,7 @@ export function OptionsCode({
             fontSize: 12,
             padding: { top: 34 },
             wordWrap: "on",
-            readOnly: true,
+            readOnly,
           }}
           onChange={(v) => onCodeChange(v)}
         />
@@ -642,6 +648,8 @@ export function OptionsCode({
           onCodeChange(v);
           setOpen(false);
         }}
+        language={language}
+        readOnly={readOnly}
         open={open}
         onOpenChange={setOpen}
       />

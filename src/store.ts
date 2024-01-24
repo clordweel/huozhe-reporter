@@ -131,6 +131,8 @@ export type PaperOptions = {
   shadow: boolean;
   shadowColor?: string;
   shadowBlur?: number;
+
+  styles?: string;
 };
 
 export const $paperOptions = map<PaperOptions>({
@@ -145,6 +147,22 @@ export const $paperOptions = map<PaperOptions>({
   radius: 10,
   shadow: false,
 });
+
+export const defaultStyles = `/** 自定义全局样式覆盖 */
+.Paper { /* 画纸 */ }
+.Header { /* 表头 */ }
+.Intro { /* 引导说明 */ }
+.Table { /* 表格 */ }
+.Footer { /* 页脚 */ }
+`;
+
+export const setCustomStyles = action(
+  $paperOptions,
+  "set.custom.styles",
+  (store, value: string) => {
+    store.setKey("styles", value);
+  }
+);
 
 export const defaultSuffix = "-{date}@x{ratio}.{ext}";
 export const defaultName = "未命名报表";
