@@ -1,5 +1,10 @@
 import { TabsContent } from "@radix-ui/react-tabs";
-import { OptionsCaption, OptionsColor, OptionsInput } from "../form-base";
+import {
+  OptionsCaption,
+  OptionsColor,
+  OptionsImageTauri,
+  OptionsInput,
+} from "../form-base";
 import { useStore } from "@nanostores/react";
 import { $exportData, $paperOptions } from "@/store";
 import { $reportData } from "../first-report/store";
@@ -49,20 +54,39 @@ export default function OptionsTab() {
 
         <OptionsCaption text="图像" className="my-4" />
 
-        <OptionsInput
-          id=""
-          label="表头 Logo 地址"
-          defaultValue={headerLogoUrl}
-          className="text-xs"
-          onBlur={(v) => $reportData.setKey("headerLogoUrl", v)}
-        />
-        <OptionsInput
-          id=""
-          label="页底 Logo 地址"
-          defaultValue={footerLogoUrl}
-          className="text-xs"
-          onBlur={(v) => $reportData.setKey("footerLogoUrl", v)}
-        />
+        {window?.__TAURI__ ? (
+          <>
+            <OptionsImageTauri
+              src={headerLogoUrl}
+              id="__header_logo"
+              label="表头 Logo"
+              onChange={(v) => $reportData.setKey("headerLogoUrl", v ?? "")}
+            />
+            <OptionsImageTauri
+              src={footerLogoUrl}
+              id="__footer_logo"
+              label="页脚 Logo"
+              onChange={(v) => $reportData.setKey("footerLogoUrl", v ?? "")}
+            />
+          </>
+        ) : (
+          <>
+            <OptionsInput
+              id=""
+              label="表头 Logo 地址"
+              defaultValue={headerLogoUrl}
+              className="text-xs"
+              onBlur={(v) => $reportData.setKey("headerLogoUrl", v)}
+            />
+            <OptionsInput
+              id=""
+              label="页底 Logo 地址"
+              defaultValue={footerLogoUrl}
+              className="text-xs"
+              onBlur={(v) => $reportData.setKey("footerLogoUrl", v)}
+            />
+          </>
+        )}
       </div>
     </TabsContent>
   );

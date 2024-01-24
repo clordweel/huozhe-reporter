@@ -1,6 +1,11 @@
 import { useToJpeg, useToPng } from "@hugocxl/react-to-image";
 
-import { FileCode2Icon, FileInputIcon, ImageDownIcon } from "lucide-react";
+import {
+  FileCode2Icon,
+  FileInputIcon,
+  ImageDownIcon,
+  RefreshCcwDotIcon,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { useStore } from "@nanostores/react";
 import {
@@ -34,13 +39,13 @@ export default function ToolbarPanel() {
   const filename = useStore($$paperFilename);
 
   const [, convertToJpeg, jpegRef] = useToJpeg<HTMLDivElement>({
-    onSuccess: (data) => {
+    onSuccess: (data: string) => {
       downloadFromData(data, filename);
     },
   });
 
   const [, convertToPng, pngRef] = useToPng<HTMLDivElement>({
-    onSuccess: (data) => {
+    onSuccess: (data: string) => {
       downloadFromData(data, filename);
     },
   });
@@ -119,6 +124,14 @@ export default function ToolbarPanel() {
         label={"缩放"}
         items={scaleItems}
       />
+
+      <Button
+        size={"icon"}
+        variant={"ghost"}
+        onClick={() => window.location.reload()}
+      >
+        <RefreshCcwDotIcon className="size-4" />
+      </Button>
 
       <div className="mx-auto"></div>
 

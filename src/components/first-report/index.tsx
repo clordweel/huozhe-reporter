@@ -2,9 +2,18 @@ import { cn } from "@/lib/utils";
 import PaperPrimitive from "../paper-primitive";
 import { useStore } from "@nanostores/react";
 import { $paperWdith } from "@/store";
-import { ListPlusIcon, TruckIcon } from "lucide-react";
-import { $reportData, Table, addTableRow, setTableRow } from "./store";
+import { DeleteIcon, ListPlusIcon, TruckIcon } from "lucide-react";
+import {
+  $reportData,
+  Table,
+  addTableRow,
+  removeTableRow,
+  setTable,
+  setTableHeader,
+  setTableRow,
+} from "./store";
 import { Button } from "../ui/button";
+import Editable from "../form-base/editable";
 
 interface Props {
   className?: string;
@@ -31,16 +40,18 @@ export function FirstReport({ className }: Props) {
 
       <Intro />
 
-      <div className="mt-8 w-[580px] mx-auto flex flex-col items-center">
+      <Editable className="h-[2em] w-full text-center"></Editable>
+
+      <div className="w-[580px] mx-auto flex flex-col items-center">
         {tables?.map((table, index) => (
-          <div key={index}>
+          <div key={index} className="w-full">
             <OrderTable data={table} index={index} />
             <div className="my-8"></div>
           </div>
         ))}
       </div>
 
-      <div className="my-auto h-12"></div>
+      <Editable className="h-[2em] mb-2 w-full text-center"></Editable>
 
       <Footer />
     </PaperPrimitive>
@@ -55,22 +66,18 @@ function Header() {
       <div className="flex justify-between items-end border-b-2 border-[var(--primaryColor)]">
         <div className="w-full">
           <p className="text-sm font-bold text-[var(--textColor)] -mb-1">
-            <input
+            <Editable
               type="text"
-              defaultValue={subtitle}
-              onInput={(e) =>
-                $reportData.setKey("subtitle", e.currentTarget.value)
-              }
+              value={subtitle}
+              onFinish={(e) => $reportData.setKey("subtitle", e)}
             />
           </p>
           <p className="text-xl font-extrabold text-[var(--primaryColor)] w-full">
-            <input
+            <Editable
               type="text"
-              defaultValue={title}
+              value={title}
               className="tracking-wider w-full"
-              onInput={(e) =>
-                $reportData.setKey("title", e.currentTarget.value)
-              }
+              onFinish={(e) => $reportData.setKey("title", e)}
             />
           </p>
         </div>
@@ -92,23 +99,23 @@ function Intro() {
 
   return (
     <div className="flex flex-col items-center w-full text-[var(--primaryColor)]">
-      <div className="my-6"></div>
+      <div className="my-4"></div>
       <h2 className="text-center text-2xl font-semibold w-full">
-        <input
+        <Editable
           type="text"
-          defaultValue={heading}
+          value={heading}
           className="w-full text-center"
-          onInput={(e) => $reportData.setKey("heading", e.currentTarget.value)}
+          onFinish={(e) => $reportData.setKey("heading", e)}
         />
       </h2>
 
       <div className="my-2"></div>
 
       <p className="w-[460px]">
-        <textarea
-          defaultValue={caption}
-          className="w-full text-sm font-bold text-center h-[5em] resize-none"
-          onInput={(e) => $reportData.setKey("caption", e.currentTarget.value)}
+        <Editable
+          value={caption}
+          className="w-full text-sm font-bold text-center resize-none"
+          onFinish={(e) => $reportData.setKey("caption", e)}
         />
       </p>
     </div>
@@ -116,53 +123,53 @@ function Intro() {
 }
 
 function Footer() {
-  const { address, phone, footerLogoUrl } = useStore($reportData);
+  const { address, phone, footerLogoUrl, shipmentCaption } =
+    useStore($reportData);
 
   return (
     <footer className="bg-[var(--primaryColor)] text-[var(--backgroundColor)] py-4 px-6">
       <section className="text-xs pl-6">
         <p className="my-1 flex items-center text-lg font-bold -ml-7">
           <TruckIcon className="mr-1 size-6" />
-          <input
+          <Editable
             type="text"
-            defaultValue={"寄送货品说明"}
+            value={shipmentCaption ?? "寄送货品说明"}
+            onFinish={(e) => $reportData.setKey("shipmentCaption", e)}
             className="bg-transparent w-full"
           />
         </p>
         <p className="my-1 flex items-center">
           <span className="mr-2 shrink-0 font-bold">收货地址</span>
-          <input
+          <Editable
             type="text"
-            defaultValue={address}
+            value={address}
             className="bg-transparent w-full"
-            onInput={(e) =>
-              $reportData.setKey("address", e.currentTarget.value)
-            }
+            onFinish={(e) => $reportData.setKey("address", e)}
           />
         </p>
         <p className="my-1 flex items-center">
           <span className="mr-2 shrink-0 font-bold">联系电话</span>
-          <input
+          <Editable
             type="text"
-            defaultValue={phone}
+            value={phone}
             className="bg-transparent w-full"
-            onInput={(e) => $reportData.setKey("phone", e.currentTarget.value)}
+            onFinish={(e) => $reportData.setKey("phone", e)}
           />
         </p>
-        <div className="my-1 flex items-center">
+        <div className="my-1 flex gap-4 items-center">
           <p className="flex">
             <span className="mr-2 shrink-0 font-bold">寄件人称呼</span>
-            <input
+            <Editable
               type="text"
-              defaultValue={"(你的名字)"}
+              value={"(你的名字)"}
               className="bg-transparent w-full"
             />
           </p>
           <p className="flex">
             <span className="mr-2 shrink-0 font-bold">寄件人联系方式</span>
-            <input
+            <Editable
               type="text"
-              defaultValue={"(你的手机号码)"}
+              value="(你的手机号码)"
               className="bg-transparent w-full"
             />
           </p>
@@ -188,12 +195,14 @@ function OrderTable({
   index: number;
 }) {
   return (
-    <article className="w-full flex flex-col gap-y-1 px-6 [&>header>button]:hover:flex">
-      <p className="text-center text-sm text-[var(--primaryColor)]">
-        {data.tip}
-      </p>
+    <article className="w-full flex flex-col gap-y-1 px-6">
+      <Editable
+        className="text-center text-sm text-[var(--primaryColor)]"
+        value={data.tip}
+        onFinish={(v) => setTable(tableIndex, "tip", v)}
+      />
 
-      <header className="grid grid-cols-6 gap-1 relative">
+      <header className="grid grid-cols-6 gap-1 relative -mr-8 pr-8 [&>button]:hover:flex">
         {data?.headings?.map((heading, index) => (
           <p
             key={index}
@@ -202,11 +211,12 @@ function OrderTable({
               index === 0 ? "col-span-4 font-semibold" : "col-span-1"
             )}
           >
-            <input
+            <Editable
               type="text"
-              defaultValue={heading}
+              value={heading}
+              onFinish={(v) => setTableHeader(tableIndex, index, v)}
               className={cn(
-                "w-full h-full",
+                "w-full h-full leading-8 px-2",
                 index === 0
                   ? "pl-4 text-[var(--secondaryColor)] text-left"
                   : "text-[var(--backgroundColor)] text-center"
@@ -218,7 +228,7 @@ function OrderTable({
         <Button
           size={"icon"}
           variant={"ghost"}
-          className="absolute -right-11 -top-1 hidden"
+          className="absolute -right-2 scale-75 -top-1 hidden"
           onClick={() => addTableRow(tableIndex)}
         >
           <ListPlusIcon className="size-4" />
@@ -226,37 +236,43 @@ function OrderTable({
       </header>
 
       {data?.rows?.map((row, index) => (
-        <section className="grid grid-cols-6 gap-1" key={index}>
-          <p className="col-span-4 text-sm font-semibold">
-            <input
+        <section
+          className="grid grid-cols-6 gap-1 relative -mr-8 pr-8 [&>button]:hover:flex"
+          key={index}
+        >
+          <p className="col-span-4 h-8 text-sm font-semibold">
+            <Editable
               type="text"
-              defaultValue={row.name}
+              value={row.name}
               className="w-full pl-4 text-left text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
-              onInput={(e) =>
-                setTableRow(tableIndex, index, "name", e.currentTarget.value)
-              }
+              onFinish={(e) => setTableRow(tableIndex, index, "name", e)}
             />
           </p>
-          <p className="col h-8 text-sm">
-            <input
+          <p className="col-span-1 h-8 text-sm">
+            <Editable
               type="text"
-              defaultValue={row.price}
+              value={row.price}
               className="w-full text-center text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
-              onInput={(e) =>
-                setTableRow(tableIndex, index, "price", e.currentTarget.value)
-              }
+              onFinish={(e) => setTableRow(tableIndex, index, "price", e)}
             />
           </p>
-          <p className="col h-8 text-sm">
-            <input
+          <p className="col-span-1 h-8 text-sm">
+            <Editable
               type="text"
-              defaultValue={row.number}
+              value={row.number}
               className="w-full text-center text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
-              onInput={(e) =>
-                setTableRow(tableIndex, index, "number", e.currentTarget.value)
-              }
+              onFinish={(e) => setTableRow(tableIndex, index, "number", e)}
             />
           </p>
+
+          <Button
+            size={"icon"}
+            variant={"ghost"}
+            className="absolute -right-2 scale-75 -top-1 hidden"
+            onClick={() => removeTableRow(tableIndex, index)}
+          >
+            <DeleteIcon className="size-4 text-destructive" />
+          </Button>
         </section>
       ))}
     </article>
