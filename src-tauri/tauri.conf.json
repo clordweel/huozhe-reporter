@@ -62,7 +62,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://github.com/clordweel/huozhe-reporter/releases/download/v{{current_version}}/huozhe-reporter-{{current_version}}_x64-setup.exe"
+        "https://reporter.github.weel.cool/update.json"
       ],
       "dialog": true,
       "windows": {

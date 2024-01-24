@@ -1,0 +1,9 @@
+{
+    "version": "0.3.4",
+    "platforms": {
+        "windows-x86_64": {
+            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSY0pQU1J2NFZwSXNrSk03RmF1K1IzVjN0MEkwWlBnbm9nUHNMb0lUOTRsLzBNMDdTVEd5TnR1TGZBYnFDSFBKSWVKcDJhS2xjQTV6M2hkN3FqVjFCRG9FSU5FTWs5dEFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA2MTE3NzM1CWZpbGU66LSn6ICF5oql6KGo6K6+6K6hXzAuMy40X3g2NC1zZXR1cC5uc2lzLnppcAo3aTV4VkhjaXV3bEJ3bDZ0MHFJVlcrT2l3K0tMaE9kUVFGM2xEWmF1MTBHMlZaSUNSVktTWWZaVW4zb2FHMldIUCtDUzZ5OWJKWmI5a2k4WGF0V1hDdz09Cg==",
+            "url": "https://github.com/clordweel/huozhe-reporter/releases/download/v0.3.4/huozhe-reporter_0.3.4_x64-setup.exe"
+        }
+    }
+}

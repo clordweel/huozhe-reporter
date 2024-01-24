@@ -1,5 +1,5 @@
 import { exit } from "@tauri-apps/api/process";
-
+import { emit } from "@tauri-apps/api/event";
 import {
   BugIcon,
   FileCode2Icon,
@@ -80,6 +80,17 @@ export function Menu() {
 
           {window.__TAURI__ && (
             <>
+              <DropdownMenuItem
+                onClick={async () => {
+                  const result = await emit("tauri://update");
+
+                  console.log(result);
+                }}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>检查更新</span>
+              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
 
               <DropdownMenuItem
