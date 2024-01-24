@@ -20,7 +20,7 @@ export default function InfoTab() {
           id=""
           label="文件名后缀"
           tip="变量：{date} | {size} | {ext}"
-          placeholder={"默认：" + defaultSuffix}
+          placeholder={"" + defaultSuffix}
           onChange={(v) => $paperOptions.setKey("suffix", v)}
         />
 

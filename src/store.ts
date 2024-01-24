@@ -106,11 +106,20 @@ export const imageTypeItems: ValueItem[] = [
   { value: "png", label: "PNG" },
 ];
 
+export const imageRatioItems: ValueItem[] = [
+  { value: "1", label: "x1" },
+  { value: "2", label: "x2" },
+  { value: "3", label: "x3" },
+  { value: "4", label: "x4" },
+  { value: "5", label: "x5" },
+];
+
 export type PaperOptions = {
   name?: string;
   suffix?: string;
 
   imageType: "jpeg" | "png";
+  imageRatio: number;
 
   backgroundColor?: string;
   textColor?: string;
@@ -122,10 +131,11 @@ export type PaperOptions = {
   shadowBlur?: number;
 };
 
-export const defaultSuffix = "-{date}.{ext}";
+export const defaultSuffix = "-{date}@x{ratio}.{ext}";
 export const defaultName = "未命名报表";
 
 export const $paperOptions = map<PaperOptions>({
+  imageRatio: 2,
   imageType: "png",
   backgroundColor: "#ffffff",
   textColor: "#172645",
@@ -134,16 +144,17 @@ export const $paperOptions = map<PaperOptions>({
 });
 
 export const $$paperFilename = computed(
-  $paperOptions,
-  ({ name = defaultName, imageType, suffix = defaultSuffix }) => {
+  [$paperOptions, $$paperSizeText],
+  ({ name = defaultName, imageType, suffix = defaultSuffix, imageRatio }) => {
     const data = {
       date: dayjs().format("YYYY-MM-DD"),
       size: $$paperSizeText.get(),
       ext: imageType,
+      ratio: imageRatio.toString(),
     };
 
     const extra = suffix.replace(
-      /\{(date|size|ext)\}/g,
+      /\{(date|size|ext|ratio)\}/g,
       (_, v: keyof typeof data) => (v ? data[v] : v)
     );
 

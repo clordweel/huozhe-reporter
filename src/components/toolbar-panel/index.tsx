@@ -14,6 +14,7 @@ import {
   $paperOptions,
   $paperScale,
   exportJSON,
+  imageRatioItems,
   imageTypeItems,
   importJSON,
   resetPaperScale,
@@ -39,12 +40,14 @@ export default function ToolbarPanel() {
   const filename = useStore($$paperFilename);
 
   const [, convertToJpeg, jpegRef] = useToJpeg<HTMLDivElement>({
+    pixelRatio: options.imageRatio,
     onSuccess: (data: string) => {
       downloadFromData(data, filename);
     },
   });
 
   const [, convertToPng, pngRef] = useToPng<HTMLDivElement>({
+    pixelRatio: options.imageRatio,
     onSuccess: (data: string) => {
       downloadFromData(data, filename);
     },
@@ -143,8 +146,18 @@ export default function ToolbarPanel() {
         onValueChange={(v) =>
           $paperOptions.setKey("imageType", v as "jpeg" | "png")
         }
-        label={""}
+        label={"格式"}
         items={imageTypeItems}
+      />
+
+      <OptionsSelect
+        id={""}
+        value={options.imageRatio.toString()}
+        triggerClass="w-16"
+        contentClass="w-16"
+        onValueChange={(v) => $paperOptions.setKey("imageRatio", Number(v))}
+        label={"倍率"}
+        items={imageRatioItems}
       />
 
       <Button size={"sm"} className="space-x-2" onClick={convert}>
