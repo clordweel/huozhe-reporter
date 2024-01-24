@@ -1,11 +1,46 @@
 import { TabsContent } from "@radix-ui/react-tabs";
 import { OptionsCaption, OptionsInput } from "../form-base";
-import { $$paperSizeText, $paperOptions, defaultSuffix } from "@/store";
+import {
+  $$paperSizeText,
+  $exportData,
+  $paperNode,
+  $paperOptions,
+  defaultSuffix,
+} from "@/store";
 import { useStore } from "@nanostores/react";
+import { useEffect, useState } from "react";
+import { useToPng } from "@hugocxl/react-to-image";
+import { transparentGridStyle } from "@/lib/utils";
+
+let timeout: undefined | number;
 
 export default function InfoTab() {
   const sizeText = useStore($$paperSizeText);
   const { name } = useStore($paperOptions);
+  const paperNode = useStore($paperNode);
+
+  const [thumbnail, setThumbnail] = useState<string | undefined>(undefined);
+
+  const [, convertToPng, pngRef] = useToPng<HTMLDivElement>({
+    pixelRatio: 0.25,
+    onSuccess: (data: string) => {
+      setThumbnail(data);
+    },
+  });
+
+  useEffect(() => {
+    if (!paperNode) return;
+    pngRef(paperNode);
+
+    $exportData.listen(() => {
+      timeout && clearTimeout(timeout);
+
+      timeout = window.setTimeout(() => {
+        convertToPng();
+        clearTimeout(timeout);
+      }, 200);
+    });
+  }, [convertToPng, paperNode, pngRef]);
 
   return (
     <TabsContent value="info">
@@ -19,16 +54,23 @@ export default function InfoTab() {
         <OptionsInput
           id=""
           label="文件名后缀"
-          tip="变量：{date} | {size} | {ext}"
-          placeholder={"默认：" + defaultSuffix}
+          tip="变量：{date} | {size} | {ext} | {ratio}"
+          placeholder={"" + defaultSuffix}
           onChange={(v) => $paperOptions.setKey("suffix", v)}
         />
 
-        <OptionsCaption text="大小信息" className="my-2" />
+        <OptionsCaption text="预览" className="my-2" />
 
-        <p className="text-xs flex flex-col gap-2 items-center">
+        <section className="text-xs flex flex-col gap-2 items-center">
+          <figure
+            className="h-56 w-full flex justify-center items-center"
+            style={{ ...transparentGridStyle(5) }}
+          >
+            <img src={thumbnail} className="h-full w-auto" alt="" />
+          </figure>
+
           <span>{sizeText} 像素</span>
-        </p>
+        </section>
 
         <OptionsCaption text="备注" className="my-2 mt-8" />
 
@@ -52,10 +94,15 @@ export default function InfoTab() {
           格式为 JSON 对象，只支持从此编辑器导出的数据文件。
         </pre>
 
-        <pre className="text-xs text-wrap">
-          <span className="font-bold">4· 基础模板：</span>
-          路径 `./dist/reports` 下存在基础报表模板，默认从该模板加载初始数据。
-        </pre>
+        {!window.__TAURI__ && (
+          <>
+            <pre className="text-xs text-wrap">
+              <span className="font-bold">5· 基础模板：</span>
+              路径 `./dist/reports`
+              下存在基础报表模板，默认从该模板加载初始数据。
+            </pre>
+          </>
+        )}
       </div>
     </TabsContent>
   );

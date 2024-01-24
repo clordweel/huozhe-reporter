@@ -19,6 +19,10 @@ interface Props {
   className?: string;
 }
 
+const Spacing = () => (
+  <Editable className="min-h-[1em] text-xs mb-2 w-full text-center"></Editable>
+);
+
 export function FirstReport({ className }: Props) {
   const paperWidth = useStore($paperWdith);
   const { tables } = useStore($reportData);
@@ -40,7 +44,7 @@ export function FirstReport({ className }: Props) {
 
       <Intro />
 
-      <Editable className="h-[2em] w-full text-center"></Editable>
+      <Spacing />
 
       <div className="w-[580px] mx-auto flex flex-col items-center">
         {tables?.map((table, index) => (
@@ -51,7 +55,7 @@ export function FirstReport({ className }: Props) {
         ))}
       </div>
 
-      <Editable className="h-[2em] mb-2 w-full text-center"></Editable>
+      <Spacing />
 
       <Footer />
     </PaperPrimitive>
@@ -83,11 +87,13 @@ function Header() {
         </div>
 
         <figure className="bg-[var(--primaryColor)] h-12 px-4 flex items-center justify-center overflow-hidden shrink-0">
-          <img
-            src={headerLogoUrl ?? "./images/表头-LOGO.png"}
-            className="h-8 w-auto"
-            alt=""
-          />
+          {headerLogoUrl && (
+            <img
+              src={headerLogoUrl ?? "./images/表头-LOGO.png"}
+              className="h-8 w-auto"
+              alt=""
+            />
+          )}
         </figure>
       </div>
     </header>
@@ -176,13 +182,17 @@ function Footer() {
         </div>
       </section>
 
-      <figure className="flex justify-center mt-10 mb-8">
-        <img
-          src={footerLogoUrl ?? "./images/页脚-LOGO.png"}
-          className="h-14 w-auto"
-          alt=""
-        />
+      <figure className="flex justify-center mt-10">
+        {footerLogoUrl && (
+          <img
+            src={footerLogoUrl ?? "./images/页脚-LOGO.png"}
+            className="h-14 w-auto"
+            alt=""
+          />
+        )}
       </figure>
+
+      <Spacing />
     </footer>
   );
 }

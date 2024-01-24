@@ -6,8 +6,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "huozhe-reporter",
-    "version": "0.1.1"
+    "productName": "货者报表设计",
+    "version": "0.2.4"
   },
   "tauri": {
     "allowlist": {
@@ -15,7 +15,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Utility",
       "copyright": "",
       "deb": {
         "depends": []
@@ -29,7 +29,7 @@
         "icons/icon.ico"
       ],
       "identifier": "com.huozhe.reporter",
-      "longDescription": "",
+      "longDescription": "货者报表设计工具",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -38,12 +38,22 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "货者报表设计",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "language": "zh-CN"
+        },
+        "nsis": {
+          "languages": [
+            "SimpChinese",
+            "English"
+          ],
+          "displayLanguageSelector": true
+        }
       }
     },
     "security": {
@@ -57,7 +67,7 @@
         "fullscreen": false,
         "height": 900,
         "resizable": true,
-        "title": "货者报表设计",
+        "title": "货者报表设计 v0.2.4",
         "width": 1200
       }
     ]
