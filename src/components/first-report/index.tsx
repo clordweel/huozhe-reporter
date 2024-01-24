@@ -29,11 +29,7 @@ export function FirstReport({ className }: Props) {
 
   return (
     <PaperPrimitive
-      className={cn(
-        "shadow-xl font-sans origin-top flex flex-col",
-        "[&_input]:bg-transparent [&_textarea]:bg-transparent",
-        className
-      )}
+      className={cn(className)}
       style={{
         width: `${paperWidth}px`,
         minHeight: "640px",

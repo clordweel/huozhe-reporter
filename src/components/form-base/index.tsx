@@ -50,6 +50,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import MonacoEditor from "@monaco-editor/react";
 import CodeDialog from "./code-dialog";
 import { tauriSelectImage } from "@/lib/tauri";
+import { Slider } from "../ui/slider";
 
 export function OptionsCaption({
   text,
@@ -354,6 +355,36 @@ export function OptionsSwitch({
         id={id}
         defaultChecked={defaultChecked}
         onCheckedChange={onChange}
+      />
+    </OptionsSectionItem>
+  );
+}
+
+export function OptionsSlider({
+  label,
+  id,
+  defaultValue,
+  onChange,
+  className,
+  step,
+  max,
+}: ItemProps & {
+  checked?: boolean;
+  defaultValue?: number[];
+  step?: number;
+  max?: number;
+  className?: string;
+  onChange?: (value: number[]) => void;
+}) {
+  return (
+    <OptionsSectionItem label={label} id={id}>
+      <Slider
+        id={id}
+        step={step}
+        max={max}
+        defaultValue={defaultValue}
+        onValueChange={onChange}
+        className={cn(className)}
       />
     </OptionsSectionItem>
   );

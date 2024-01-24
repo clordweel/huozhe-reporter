@@ -126,13 +126,12 @@ export type PaperOptions = {
   primaryColor?: string;
   secondaryColor?: string;
 
-  shadow?: boolean;
+  border: boolean;
+  radius: number;
+  shadow: boolean;
   shadowColor?: string;
   shadowBlur?: number;
 };
-
-export const defaultSuffix = "-{date}@x{ratio}.{ext}";
-export const defaultName = "未命名报表";
 
 export const $paperOptions = map<PaperOptions>({
   imageRatio: 2,
@@ -141,7 +140,14 @@ export const $paperOptions = map<PaperOptions>({
   textColor: "#172645",
   primaryColor: "#172645",
   secondaryColor: "#ec7558",
+
+  border: true,
+  radius: 10,
+  shadow: false,
 });
+
+export const defaultSuffix = "-{date}@x{ratio}.{ext}";
+export const defaultName = "未命名报表";
 
 export const $$paperFilename = computed(
   [$paperOptions, $$paperSizeText],

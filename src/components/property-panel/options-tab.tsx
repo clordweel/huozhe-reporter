@@ -4,14 +4,23 @@ import {
   OptionsColor,
   OptionsImageTauri,
   OptionsInput,
+  OptionsSlider,
+  OptionsSwitch,
 } from "../form-base";
 import { useStore } from "@nanostores/react";
 import { $exportData, $paperOptions } from "@/store";
 import { $reportData } from "../first-report/store";
 
 export default function OptionsTab() {
-  const { backgroundColor, textColor, primaryColor, secondaryColor } =
-    useStore($paperOptions);
+  const {
+    backgroundColor,
+    textColor,
+    primaryColor,
+    secondaryColor,
+    radius,
+    border,
+    shadow,
+  } = useStore($paperOptions);
 
   const { headerLogoUrl, footerLogoUrl } = useStore($exportData);
 
@@ -50,6 +59,30 @@ export default function OptionsTab() {
           color={textColor}
           defaultValue={textColor}
           onChange={(v) => $paperOptions.setKey("textColor", v)}
+        />
+
+        <OptionsCaption text="边框" className="my-4" />
+
+        <OptionsSwitch
+          id=""
+          label="边缘阴影"
+          defaultChecked={shadow}
+          onChange={(v) => $paperOptions.setKey("shadow", v)}
+        />
+
+        <OptionsSwitch
+          id=""
+          label="边框线条"
+          defaultChecked={border}
+          onChange={(v) => $paperOptions.setKey("border", v)}
+        />
+
+        <OptionsSlider
+          id=""
+          label="图片圆角"
+          defaultValue={[radius]}
+          className="w-32 bg-slate-50"
+          onChange={(v) => $paperOptions.setKey("radius", v[0])}
         />
 
         <OptionsCaption text="图像" className="my-4" />

@@ -72,7 +72,7 @@ export default function InfoTab() {
           <span>{sizeText} 像素</span>
         </section>
 
-        <OptionsCaption text="备注" className="my-2 mt-8" />
+        <OptionsCaption text="备注" className="my-2" />
 
         <pre className="text-xs text-wrap">
           <span className="font-bold">1· 添加表格列：</span>

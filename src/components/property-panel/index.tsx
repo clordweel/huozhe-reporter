@@ -11,6 +11,7 @@ import OptionsTab from "./options-tab";
 import InfoTab from "./info-tab";
 import DataTab from "./data-tab";
 import { Separator } from "../ui/separator";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function PropertyPanel() {
   const value = useStore($propertyPanelValue);
@@ -42,11 +43,14 @@ export default function PropertyPanel() {
         </ToggleGroupItem>
       </ToggleGroup>
 
-      <Tabs value={value} orientation={"vertical"} className="w-full">
-        <InfoTab />
-        <OptionsTab />
-        <DataTab />
-      </Tabs>
+      <ScrollArea className="h-[calc(var(--paper-panel-height)-76px)]">
+        <Tabs value={value} orientation={"vertical"} className="w-full">
+          <InfoTab />
+          <OptionsTab />
+          <DataTab />
+        </Tabs>
+        <div className="py-8"></div>
+      </ScrollArea>
     </div>
   );
 }
