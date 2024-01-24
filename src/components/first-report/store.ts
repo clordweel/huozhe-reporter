@@ -88,6 +88,20 @@ export const addTableRow = action(
   }
 );
 
+export const removeTableRow = action(
+  $reportData,
+  "add.table.row",
+  (store, tableIndex: number, rowIndex) => {
+    const tables = store.get().tables;
+
+    tables[tableIndex].rows = tables[tableIndex].rows.filter(
+      (_, i) => i !== rowIndex
+    );
+
+    store.setKey("tables", [...tables]);
+  }
+);
+
 export const setTableRow = action(
   $reportData,
   "set.table.row",

@@ -2,11 +2,12 @@ import { cn } from "@/lib/utils";
 import PaperPrimitive from "../paper-primitive";
 import { useStore } from "@nanostores/react";
 import { $paperWdith } from "@/store";
-import { ListPlusIcon, TruckIcon } from "lucide-react";
+import { DeleteIcon, ListPlusIcon, TruckIcon } from "lucide-react";
 import {
   $reportData,
   Table,
   addTableRow,
+  removeTableRow,
   setTable,
   setTableHeader,
   setTableRow,
@@ -194,14 +195,14 @@ function OrderTable({
   index: number;
 }) {
   return (
-    <article className="w-full flex flex-col gap-y-1 px-6 [&>header>button]:hover:flex">
+    <article className="w-full flex flex-col gap-y-1 px-6">
       <Editable
         className="text-center text-sm text-[var(--primaryColor)]"
         value={data.tip}
         onFinish={(v) => setTable(tableIndex, "tip", v)}
       />
 
-      <header className="grid grid-cols-6 gap-1 relative">
+      <header className="grid grid-cols-6 gap-1 relative -mr-8 pr-8 [&>button]:hover:flex">
         {data?.headings?.map((heading, index) => (
           <p
             key={index}
@@ -227,7 +228,7 @@ function OrderTable({
         <Button
           size={"icon"}
           variant={"ghost"}
-          className="absolute -right-11 -top-1 hidden"
+          className="absolute -right-2 scale-75 -top-1 hidden"
           onClick={() => addTableRow(tableIndex)}
         >
           <ListPlusIcon className="size-4" />
@@ -235,7 +236,10 @@ function OrderTable({
       </header>
 
       {data?.rows?.map((row, index) => (
-        <section className="grid grid-cols-6 gap-1" key={index}>
+        <section
+          className="grid grid-cols-6 gap-1 relative -mr-8 pr-8 [&>button]:hover:flex"
+          key={index}
+        >
           <p className="col-span-4 h-8 text-sm font-semibold">
             <Editable
               type="text"
@@ -260,6 +264,15 @@ function OrderTable({
               onFinish={(e) => setTableRow(tableIndex, index, "number", e)}
             />
           </p>
+
+          <Button
+            size={"icon"}
+            variant={"ghost"}
+            className="absolute -right-2 scale-75 -top-1 hidden"
+            onClick={() => removeTableRow(tableIndex, index)}
+          >
+            <DeleteIcon className="size-4 text-destructive" />
+          </Button>
         </section>
       ))}
     </article>
