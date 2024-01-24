@@ -34,7 +34,7 @@ export default function InfoTab() {
     timeout = window.setTimeout(() => {
       convertToPng();
       clearTimeout(timeout);
-    }, 300);
+    }, 200);
   }, [convertToPng]);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function InfoTab() {
 
         <section className="text-xs flex flex-col gap-2 items-center">
           <figure
-            className="h-56 w-full flex justify-center items-center"
+            className="h-56 w-full flex justify-center items-center shadow-inner p-2"
             style={{ ...transparentGridStyle(5) }}
           >
             {thumbnail && (

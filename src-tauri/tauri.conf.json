@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "货者报表设计",
-    "version": "0.3.1"
+    "version": "0.3.2"
   },
   "tauri": {
     "allowlist": {
@@ -57,7 +57,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": ""
     },
     "updater": {
       "active": false
@@ -67,7 +67,7 @@
         "fullscreen": false,
         "height": 900,
         "resizable": true,
-        "title": "货者报表设计 v0.3.1",
+        "title": "货者报表设计 v0.3.2",
         "width": 1200
       }
     ]
