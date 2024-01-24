@@ -8,18 +8,21 @@ import { cn } from "./lib/utils";
 
 export default function App() {
   const cssVariables = {
-    "--paper-panel-height": "calc(100dvh - 142px)",
+    "--paper-panel-height": "calc(100dvh - 92px)",
     "--paper-panel-width": "calc(100dvw - 400px)",
   } as Record<string, string>;
 
   return (
     <>
-      <div className="h-[100dvh] w-[100dvw]" style={{ ...cssVariables }}>
-        <div className="h-full w-full grid gap-2 grid-cols-[1fr_360px] grid-rows-[52px_1fr_42px] p-4">
+      <div
+        className="h-[100dvh] w-[100dvw] bg-slate-50"
+        style={{ ...cssVariables }}
+      >
+        <div className="h-full w-full grid gap-2 grid-cols-[1fr_360px] grid-rows-[52px_1fr] p-4">
           <header
             className={cn(
               "col-span-2",
-              "shadow outline outline-1 outline-slate-300 rounded flex items-center"
+              "bg-white shadow outline outline-1 outline-slate-300 rounded flex items-center"
             )}
           >
             <ToolbarPanel />
@@ -28,7 +31,7 @@ export default function App() {
           <main
             className={cn(
               "col-span-1",
-              "shadow outline outline-1 outline-slate-300 rounded"
+              "bg-white shadow outline outline-1 outline-slate-300 rounded"
             )}
           >
             <PaperPanel>
@@ -39,18 +42,11 @@ export default function App() {
           <aside
             className={cn(
               "col-span-1",
-              "shadow outline outline-1 outline-slate-300 rounded"
+              "bg-white shadow outline outline-1 outline-slate-300 rounded"
             )}
           >
             <PropertyPanel />
           </aside>
-
-          <footer
-            className={cn(
-              "col-span-2",
-              "shadow outline outline-1 outline-slate-300 rounded"
-            )}
-          ></footer>
         </div>
       </div>
 
