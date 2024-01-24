@@ -37,6 +37,7 @@ specifiers:
   eslint: ^8.55.0
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.4.5
+  html-to-image: ^1.11.11
   lucide-react: ^0.314.0
   monaco-editor: ^0.45.0
   nanostores: ^0.9.5
@@ -53,7 +54,7 @@ specifiers:
   vite: ^5.0.8
 
 dependencies:
-  '@hugocxl/react-to-image': 0.0.9_react@18.2.0
+  '@hugocxl/react-to-image': 0.0.9_cmpqnox7zrghzxc67i3mmp4rxy
   '@monaco-editor/react': 4.6.0_hoebgzu3hijrwdzih2yxct3fp4
   '@nanostores/react': github.com/nanostores/react/b71b8427c9ec9c780083544505495ce7b36b7059_f7bn66ljxqyv426n5eme7tizfy
   '@radix-ui/react-dialog': 1.0.5_zgwwugpnwb5kzp3fjmd337gy2u
@@ -77,6 +78,7 @@ dependencies:
   clsx: 2.1.0
   cmdk: 0.2.0_p2jlmv6k7k3po6tueteg46f2ku
   dayjs: 1.11.10
+  html-to-image: 1.11.11
   lucide-react: 0.314.0_react@18.2.0
   monaco-editor: 0.45.0
   nanostores: 0.9.5
@@ -619,12 +621,13 @@ packages:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
     dev: false
 
-  /@hugocxl/react-to-image/0.0.9_react@18.2.0:
+  /@hugocxl/react-to-image/0.0.9_cmpqnox7zrghzxc67i3mmp4rxy:
     resolution: {integrity: sha512-UzPtjPb5k0V8oPKjmDvYnWtTNCuFh+2ysXF4+dXL0tnEaFDfu2M3iSt32pzKbJsZYoFu5X12JKKd9MKa2OsR6g==}
     peerDependencies:
       html-to-image: '>=1'
       react: '>=16'
     dependencies:
+      html-to-image: 1.11.11
       react: 18.2.0
     dev: false
 
@@ -3140,6 +3143,10 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       function-bind: 1.1.2
+
+  /html-to-image/1.11.11:
+    resolution: {integrity: sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==}
+    dev: false
 
   /hyphenate-style-name/1.0.4:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
