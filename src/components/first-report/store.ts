@@ -27,6 +27,7 @@ type Data = {
 
   tables: Table[];
 
+  shipmentCaption?: string;
   address: string;
   phone: string;
 
@@ -43,6 +44,30 @@ onSet($reportData, async ({ newValue: data }) => {
 onSet($importData, ({ newValue: data }) => {
   $reportData.set(data as Data);
 });
+
+export const setTable = action(
+  $reportData,
+  "set.table",
+  (store, tableIndex: number, key: keyof Pick<Table, "tip">, value: string) => {
+    const tables = store.get().tables;
+
+    tables[tableIndex][key] = value;
+
+    store.setKey("tables", [...tables]);
+  }
+);
+
+export const setTableHeader = action(
+  $reportData,
+  "set.table.header",
+  (store, tableIndex: number, headerIndex, value: string) => {
+    const tables = store.get().tables;
+
+    tables[tableIndex].headings[headerIndex] = value;
+
+    store.setKey("tables", [...tables]);
+  }
+);
 
 export const addTableRow = action(
   $reportData,
