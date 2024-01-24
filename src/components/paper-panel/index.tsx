@@ -1,4 +1,5 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { transparentGridStyle } from "@/lib/utils";
 import { $paperOptions } from "@/store";
 import { useStore } from "@nanostores/react";
 
@@ -14,10 +15,7 @@ export default function PaperPanel({ children }: Props) {
     <ScrollArea
       className="w-[var(--paper-panel-width)] h-[var(--paper-panel-height)]"
       style={{
-        backgroundImage:
-          "linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%,rgba(0, 0, 0, 0.12) 75%), linear-gradient(45deg,rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%)",
-        backgroundPosition: "0 0, 10px 10px",
-        backgroundSize: "20px 20px",
+        ...transparentGridStyle(10),
         ...({
           "--textColor": textColor,
           "--backgroundColor": backgroundColor,

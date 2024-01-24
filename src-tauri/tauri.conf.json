@@ -7,11 +7,11 @@
   },
   "package": {
     "productName": "huozhe-reporter",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true
     },
     "bundle": {
       "active": true,
@@ -55,10 +55,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 900,
         "resizable": true,
         "title": "货者报表设计",
-        "width": 800
+        "width": 1200
       }
     ]
   }

@@ -34,13 +34,13 @@ export default function ToolbarPanel() {
   const filename = useStore($$paperFilename);
 
   const [, convertToJpeg, jpegRef] = useToJpeg<HTMLDivElement>({
-    onSuccess: (data) => {
+    onSuccess: (data: string) => {
       downloadFromData(data, filename);
     },
   });
 
   const [, convertToPng, pngRef] = useToPng<HTMLDivElement>({
-    onSuccess: (data) => {
+    onSuccess: (data: string) => {
       downloadFromData(data, filename);
     },
   });

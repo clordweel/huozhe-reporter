@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { ColorPickerPopup } from "./color-picker";
-import { cn } from "@/lib/utils";
+import { cn, transparentGridStyle } from "@/lib/utils";
 import {
   CodeIcon,
   DeleteIcon,
@@ -49,6 +49,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import MonacoEditor from "@monaco-editor/react";
 import CodeDialog from "./code-dialog";
+import { tauriSelectImage } from "@/lib/tauri";
 
 export function OptionsCaption({
   text,
@@ -210,6 +211,65 @@ export function OptionsTextarea({
   );
 }
 
+export function OptionsImageTauri({
+  label,
+  id,
+  src,
+  onChange,
+}: ItemProps & {
+  value?: string | null;
+  src?: string | null;
+  onChange?: (src: string | null) => void;
+}) {
+  const onClick = async () => {
+    const url = await tauriSelectImage();
+
+    if (!url) return toast({ title: "未选择文件" });
+
+    onChange && onChange(url);
+
+    return toast({
+      title: "上传成功",
+      variant: "default",
+    });
+  };
+
+  return (
+    <OptionsSectionItem label={label} dir="col">
+      {!src ? (
+        <Label
+          htmlFor={id}
+          className={cn(
+            "w-full h-24 outline-dashed outline-1 outline-slate-200",
+            "cursor-pointer flex items-center justify-center rounded-lg"
+          )}
+          onClick={onClick}
+        >
+          <ImageIcon className="h-12 w-12 text-slate-200" />
+        </Label>
+      ) : (
+        <div style={{ ...transparentGridStyle(5) }}>
+          <img
+            src={src ?? undefined}
+            alt="image"
+            className={cn("rounded-lg object-cover", "w-full h-24")}
+          />
+        </div>
+      )}
+      {!!src && (
+        <Button
+          variant="destructive"
+          size="icon"
+          className="absolute top-6 right-0 w-6 h-6 rounded-full p-1"
+          onClick={() => onChange && onChange("")}
+        >
+          <XIcon />
+        </Button>
+      )}
+    </OptionsSectionItem>
+  );
+}
+
 export function OptionsImage({
   label,
   id,
@@ -220,8 +280,6 @@ export function OptionsImage({
   src?: string | null;
   onChange?: (src: string | null) => void;
 }) {
-  console.log(src);
-
   const onInput: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
     const file = e.target.files?.item(0);
 

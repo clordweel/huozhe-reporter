@@ -81,3 +81,12 @@ export function sleep(ms: number) {
 export function nextTick<T extends (...args: unknown[]) => unknown>(fn: T) {
   Promise.resolve().then(fn);
 }
+
+export function transparentGridStyle(size: number = 10) {
+  return {
+    backgroundImage:
+      "linear-gradient(45deg, rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%,rgba(0, 0, 0, 0.12) 75%), linear-gradient(45deg,rgba(0, 0, 0, 0.12) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.12) 75%)",
+    backgroundPosition: `0 0, ${size}px ${size}px`,
+    backgroundSize: `${size * 2}px ${size * 2}px`,
+  };
+}
