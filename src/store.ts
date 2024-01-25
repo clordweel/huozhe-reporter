@@ -237,7 +237,7 @@ export const exportJSON = action($paperOptions, "export.json", (store) => {
 
 export const $updateDialogOpened = atom(false);
 
-export const $localVersion = atom('0.0.0');
+export const $localVersion = atom("0.0.0");
 
 export const $remoteVersion = atom<string | null>(null);
 export const $updateContent = atom<string | null>(null);
@@ -267,9 +267,19 @@ export const checkAppUpdate = action(
         store.set(manifest?.version ?? null);
 
         $updateContent.set(manifest?.body ?? null);
+      } else {
+        toast({
+          duration: 3000,
+          title: "当前安装已是最新版本",
+        });
       }
     } catch (error) {
       console.error(error);
+      toast({
+        duration: 3000,
+        title: "检查更新失败",
+        description: (error as Error).message,
+      });
     }
   }
 );
