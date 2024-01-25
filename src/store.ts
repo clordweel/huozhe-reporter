@@ -1,10 +1,12 @@
-import { action, atom, computed, map } from "nanostores";
+import { action, atom, computed, map, onMount } from "nanostores";
+import { downloadAsFile, nextTick } from "./lib/utils";
+import { toast } from "./components/ui/use-toast";
+import { getVersion } from "@tauri-apps/api/app";
+
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
-import { downloadAsFile, nextTick } from "./lib/utils";
-import { toast } from "./components/ui/use-toast";
 
 dayjs.locale("zh-cn");
 dayjs.extend(customParseFormat);
@@ -229,4 +231,60 @@ export const exportJSON = action($paperOptions, "export.json", (store) => {
   const json = JSON.stringify({ ...options, data: $exportData.get() });
 
   downloadAsFile(json, `${options.name}.json`);
+});
+
+import {
+  checkUpdate,
+  installUpdate,
+  onUpdaterEvent,
+} from "@tauri-apps/api/updater";
+import { relaunch } from "@tauri-apps/api/process";
+
+export const $latestVersion = atom<string | null>(null);
+
+export const getAppVersion = action(
+  $latestVersion,
+  "get.app.version",
+  async (store) => {
+    store.set(await getVersion());
+  }
+);
+
+export const checkAppUpdate = action(
+  $latestVersion,
+  "check.app.update",
+  async (store) => {
+    let version: undefined | string = await getVersion();
+
+    console.log(version);
+    
+    try {
+      const { shouldUpdate, manifest } = await checkUpdate();
+
+      console.log(shouldUpdate, manifest);
+      
+      if (shouldUpdate) {
+        console.log(
+          `Installing update ${manifest?.version}, ${manifest?.date}, ${manifest?.body}`
+        );
+
+        // 如果有新版本则更新版本，否则保持
+        version = manifest?.version ?? version;
+
+        // 安装更新
+        await installUpdate();
+
+        // 重启应用
+        await relaunch();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    store.set(version);
+  }
+);
+
+onMount($latestVersion, () => {
+  getAppVersion();
 });

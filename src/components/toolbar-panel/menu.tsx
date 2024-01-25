@@ -16,14 +16,23 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "../ui/input";
-import { exportJSON, importJSON } from "@/store";
+import {
+  $latestVersion,
+  checkAppUpdate,
+  exportJSON,
+  importJSON,
+} from "@/store";
 import { useCallback } from "react";
 import { Label } from "../ui/label";
+import { useStore } from "@nanostores/react";
 
 export function Menu() {
+  const version = useStore($latestVersion);
+
   const importPaper = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     async (file) => {
       importJSON(await file.target.files?.[0].text());
@@ -81,9 +90,12 @@ export function Menu() {
 
           {window.__TAURI__ && (
             <>
-              <DropdownMenuItem onClick={() => emit("tauri://update")}>
+              <DropdownMenuItem onClick={() => checkAppUpdate()}>
                 <RocketIcon className="mr-2 h-4 w-4" />
                 <span>检查更新</span>
+                <DropdownMenuShortcut className="bg-slate-100 px-2 rounded -mr-1 border font-bold">
+                  V{version}
+                </DropdownMenuShortcut>
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
