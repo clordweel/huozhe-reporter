@@ -4,8 +4,9 @@ import {
   BugIcon,
   FileCode2Icon,
   FileInputIcon,
-  LogOut,
+  LogOutIcon,
   MenuIcon,
+  RocketIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -81,7 +82,7 @@ export function Menu() {
           {window.__TAURI__ && (
             <>
               <DropdownMenuItem onClick={() => emit("tauri://update")}>
-                <LogOut className="mr-2 h-4 w-4" />
+                <RocketIcon className="mr-2 h-4 w-4" />
                 <span>检查更新</span>
               </DropdownMenuItem>
 
@@ -91,7 +92,7 @@ export function Menu() {
                 className="text-destructive"
                 onClick={() => exit(1)}
               >
-                <LogOut className="mr-2 h-4 w-4" />
+                <LogOutIcon className="mr-2 h-4 w-4" />
                 <span>退出</span>
               </DropdownMenuItem>
             </>
