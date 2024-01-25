@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "货者报表设计",
-    "version": "0.3.5"
+    "version": "0.3.8"
   },
   "tauri": {
     "allowlist": {
@@ -64,7 +64,7 @@
       "endpoints": [
         "https://reporter.github.weel.cool/update.json"
       ],
-      "dialog": true,
+      "dialog": false,
       "windows": {
         "installMode": "passive",
         "installerArgs": []
@@ -76,7 +76,7 @@
         "fullscreen": false,
         "height": 900,
         "resizable": true,
-        "title": "货者报表设计 v0.3.5",
+        "title": "货者报表设计 v0.3.8",
         "width": 1200
       }
     ]

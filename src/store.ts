@@ -1,7 +1,9 @@
 import { action, atom, computed, map, onMount } from "nanostores";
-import { downloadAsFile, nextTick } from "./lib/utils";
+import { downloadAsFile, nextTick, sleep } from "./lib/utils";
 import { toast } from "./components/ui/use-toast";
 import { getVersion } from "@tauri-apps/api/app";
+import { checkUpdate, installUpdate } from "@tauri-apps/api/updater";
+import { relaunch } from "@tauri-apps/api/process";
 
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -233,17 +235,15 @@ export const exportJSON = action($paperOptions, "export.json", (store) => {
   downloadAsFile(json, `${options.name}.json`);
 });
 
-import {
-  checkUpdate,
-  installUpdate,
-  onUpdaterEvent,
-} from "@tauri-apps/api/updater";
-import { relaunch } from "@tauri-apps/api/process";
+export const $updateDialogOpened = atom(false);
 
-export const $latestVersion = atom<string | null>(null);
+export const $localVersion = atom('0.0.0');
+
+export const $remoteVersion = atom<string | null>(null);
+export const $updateContent = atom<string | null>(null);
 
 export const getAppVersion = action(
-  $latestVersion,
+  $localVersion,
   "get.app.version",
   async (store) => {
     store.set(await getVersion());
@@ -251,40 +251,59 @@ export const getAppVersion = action(
 );
 
 export const checkAppUpdate = action(
-  $latestVersion,
+  $remoteVersion,
   "check.app.update",
-  async (store) => {
-    let version: undefined | string = await getVersion();
-
-    console.log(version);
-    
+  async (store, dialog: boolean = true) => {
     try {
       const { shouldUpdate, manifest } = await checkUpdate();
 
-      console.log(shouldUpdate, manifest);
-      
       if (shouldUpdate) {
+        dialog && $updateDialogOpened.set(true);
+
         console.log(
           `Installing update ${manifest?.version}, ${manifest?.date}, ${manifest?.body}`
         );
 
-        // 如果有新版本则更新版本，否则保持
-        version = manifest?.version ?? version;
+        store.set(manifest?.version ?? null);
 
-        // 安装更新
-        await installUpdate();
-
-        // 重启应用
-        await relaunch();
+        $updateContent.set(manifest?.body ?? null);
       }
     } catch (error) {
       console.error(error);
     }
-
-    store.set(version);
   }
 );
 
-onMount($latestVersion, () => {
+export const $installAppLoading = atom(false);
+
+export const installAppUpdate = action(
+  $installAppLoading,
+  "install.app.update",
+  async (store) => {
+    store.set(true);
+
+    try {
+      await sleep(2000);
+
+      // 安装更新
+      await installUpdate();
+
+      // 重启应用
+      await relaunch();
+    } catch (error) {
+      toast({
+        title: "安装更新失败",
+        description: "请检查网络或稍后重试",
+        variant: "destructive",
+      });
+
+      console.error(error);
+    }
+
+    store.set(false);
+  }
+);
+
+onMount($remoteVersion, () => {
   getAppVersion();
 });

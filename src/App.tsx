@@ -3,6 +3,7 @@ import PaperPanel from "./components/paper-panel";
 import PropertyPanel from "./components/property-panel";
 import ToolbarPanel from "./components/toolbar-panel";
 import { Toaster } from "./components/ui/toaster";
+import UpdateDialog from "./components/update-dialog";
 
 import { cn } from "./lib/utils";
 
@@ -51,6 +52,8 @@ export default function App() {
       </div>
 
       <Toaster />
+
+      <UpdateDialog />
     </>
   );
 }

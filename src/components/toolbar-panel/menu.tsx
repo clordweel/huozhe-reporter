@@ -1,5 +1,4 @@
 import { exit } from "@tauri-apps/api/process";
-import { emit } from "@tauri-apps/api/event";
 import {
   BugIcon,
   FileCode2Icon,
@@ -16,12 +15,12 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "../ui/input";
 import {
-  $latestVersion,
+  $localVersion,
+  $remoteVersion,
   checkAppUpdate,
   exportJSON,
   importJSON,
@@ -31,7 +30,8 @@ import { Label } from "../ui/label";
 import { useStore } from "@nanostores/react";
 
 export function Menu() {
-  const version = useStore($latestVersion);
+  const localVersion = useStore($localVersion);
+  const remoteVersion = useStore($remoteVersion);
 
   const importPaper = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     async (file) => {
@@ -93,9 +93,16 @@ export function Menu() {
               <DropdownMenuItem onClick={() => checkAppUpdate()}>
                 <RocketIcon className="mr-2 h-4 w-4" />
                 <span>检查更新</span>
-                <DropdownMenuShortcut className="bg-slate-100 px-2 rounded -mr-1 border font-bold">
-                  V{version}
-                </DropdownMenuShortcut>
+
+                {remoteVersion ? (
+                  <span className="bg-primary text-secondary px-2 rounded scale-75 text-xs ml-auto -mr-2 border font-bold">
+                    V{remoteVersion}
+                  </span>
+                ) : (
+                  <span className="bg-slate-100 px-2 rounded scale-75 text-xs ml-auto -mr-2 border font-bold">
+                    V{localVersion}
+                  </span>
+                )}
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
