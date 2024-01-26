@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "货者报表设计",
-    "version": "0.3.9"
+    "version": "0.3.10"
   },
   "tauri": {
     "allowlist": {
