@@ -17,8 +17,8 @@ export default function PropertyPanel() {
 
   return (
     <div className="grid grid-cols-[48px_1fr]">
-      <header className="col-span-2 px-2 pt-4 mb-2">
-        <h3 className="text-lg font-bold">
+      <header className="col-span-2 pt-4 mb-2">
+        <h3 className="text-lg font-bold px-4">
           {propertyPanelItems.find((e) => e.value === value)?.label}
         </h3>
       </header>
@@ -26,16 +26,25 @@ export default function PropertyPanel() {
       <ToggleGroup
         type="single"
         value={value}
-        className="flex flex-col gap-1 shrink-0 justify-start pt-2"
+        className="flex flex-col gap-0 shrink-0 justify-start pt-2"
         onValueChange={switchPropertyPanelValue}
       >
-        <ToggleGroupItem value="info" className="size-12 rounded-none">
+        <ToggleGroupItem
+          value="info"
+          className="size-12 rounded-none hover:bg-transparent"
+        >
           <InfoIcon className="size-4" />
         </ToggleGroupItem>
-        <ToggleGroupItem value="options" className="size-12 rounded-none">
+        <ToggleGroupItem
+          value="options"
+          className="size-12 rounded-none hover:bg-transparent"
+        >
           <Settings2Icon className="size-4" />
         </ToggleGroupItem>
-        <ToggleGroupItem value="data" className="size-12 rounded-none">
+        <ToggleGroupItem
+          value="data"
+          className="size-12 rounded-none hover:bg-transparent"
+        >
           <CodeSquareIcon className="size-4" />
         </ToggleGroupItem>
       </ToggleGroup>
