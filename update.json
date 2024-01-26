@@ -1,10 +1,10 @@
 {
-    "version": "0.3.8",
+    "version": "0.3.10",
     "notes": "添加自定义版本更新弹窗",
     "platforms": {
         "windows-x86_64": {
-            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSY0pQU1J2NFZwSXRZVHZwZlJlTWdDNFRpVTVQNVh2dUxLZUFBK0FTUWJmWDZsRTdyMUxSWnNheHg0b3UwdGtNaDF1QVptMUwvSjA3WUhReVlyMDVQTm1iL0F1dmpoZFFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA2MTgzOTg2CWZpbGU66LSn6ICF5oql6KGo6K6+6K6hXzAuMy44X3g2NC1zZXR1cC5uc2lzLnppcApHbFJsVjhhTVFaTTBJS29HNHhzVU9oS3FCYVN2S3k3V21JWWxzYUFXU0U0eFhrZkNwOGFVb0VXS21qbEtpcmpJc1R1cDdjc2EyVUgxQTM0Wm1xaDNBZz09Cg==",
-            "url": "https://github.com/clordweel/huozhe-reporter/releases/download/v0.3.8/huozhe-reporter_0.3.8_x64-setup.nsis.zip"
+            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSY0pQU1J2NFZwSXJCME41ME9UbGdGaHBPYUl0L0k5S0QxQlB1UVpYakZMSVVBZkdrVy82SC81d29xM2lBNmphVVhBektkUmpPR2ltMUpwdHpoVit4dTRROERPZmVub2dZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA2MjQ0NzgxCWZpbGU66LSn6ICF5oql6KGo6K6+6K6hXzAuMy4xMF94NjQtc2V0dXAubnNpcy56aXAKTC9zSFhITWJsTmc4YUc3YjNnOHFSendqWmJDbzVVZ1dkUFl2UzJlSmhFNE5FeEc4M3h2Ui9YUDZaZ1RkSXdMWnRUVXhHUXdHSGtEQzZaSEhMQWZFQ1E9PQo=",
+            "url": "https://github.com/clordweel/huozhe-reporter/releases/download/v0.3.10/huozhe-reporter_0.3.10_x64-setup.nsis.zip"
         }
     }
 }
