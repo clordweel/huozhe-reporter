@@ -10,7 +10,6 @@ import { CodeSquareIcon, InfoIcon, Settings2Icon } from "lucide-react";
 import OptionsTab from "./options-tab";
 import InfoTab from "./info-tab";
 import DataTab from "./data-tab";
-import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 
 export default function PropertyPanel() {
@@ -18,13 +17,11 @@ export default function PropertyPanel() {
 
   return (
     <div className="grid grid-cols-[48px_1fr]">
-      <header className="col-span-2 px-2 pt-4 mb-4">
+      <header className="col-span-2 px-2 pt-4 mb-2">
         <h3 className="text-lg font-bold">
           {propertyPanelItems.find((e) => e.value === value)?.label}
         </h3>
       </header>
-
-      <Separator className="col-span-2" />
 
       <ToggleGroup
         type="single"
@@ -32,13 +29,13 @@ export default function PropertyPanel() {
         className="flex flex-col gap-1 shrink-0 justify-start pt-2"
         onValueChange={switchPropertyPanelValue}
       >
-        <ToggleGroupItem value="info" className="size-12">
+        <ToggleGroupItem value="info" className="size-12 rounded-none">
           <InfoIcon className="size-4" />
         </ToggleGroupItem>
-        <ToggleGroupItem value="options" className="size-12">
+        <ToggleGroupItem value="options" className="size-12 rounded-none">
           <Settings2Icon className="size-4" />
         </ToggleGroupItem>
-        <ToggleGroupItem value="data" className="size-12">
+        <ToggleGroupItem value="data" className="size-12 rounded-none">
           <CodeSquareIcon className="size-4" />
         </ToggleGroupItem>
       </ToggleGroup>

@@ -582,6 +582,7 @@ export function OptionsCode({
   defaultValue = "",
   readOnly = true,
   value = "",
+  wrap = true,
   onChange,
 }: ItemProps & {
   language?: string;
@@ -589,6 +590,7 @@ export function OptionsCode({
   defaultValue?: string;
   readOnly?: boolean;
   value?: string;
+  wrap?: boolean;
   onChange?: (val: string) => void;
 }) {
   const [code, setCode] = useState(value || defaultValue);
@@ -635,7 +637,7 @@ export function OptionsCode({
             lineNumbersMinChars: 2,
             fontSize: 12,
             padding: { top: 34 },
-            wordWrap: "on",
+            wordWrap: wrap ? "on" : "wordWrapColumn",
             readOnly,
           }}
           onChange={(v) => onCodeChange(v)}

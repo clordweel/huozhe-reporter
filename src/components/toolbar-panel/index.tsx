@@ -1,6 +1,11 @@
 import { useToJpeg, useToPng } from "@hugocxl/react-to-image";
 
-import { ImageDownIcon, Loader2Icon, RefreshCcwDotIcon } from "lucide-react";
+import {
+  ImageDownIcon,
+  Layers2Icon,
+  Loader2Icon,
+  RefreshCcwDotIcon,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { useStore } from "@nanostores/react";
 import {
@@ -24,6 +29,7 @@ import {
 } from "../ui/tooltip";
 import { Separator } from "../ui/separator";
 import { Menu } from "./menu";
+import { toast } from "../ui/use-toast";
 
 export default function ToolbarPanel() {
   const paperNode = useStore($paperNode);
@@ -32,13 +38,13 @@ export default function ToolbarPanel() {
 
   const filename = useStore($$paperFilename);
 
-  const [convertLoading, setConvertLoading] = useState(false);
+  const [downloadLoading, setdownloadLoading] = useState(false);
 
   const [, convertToJpeg, jpegRef] = useToJpeg<HTMLDivElement>({
     pixelRatio: options.imageRatio,
     onSuccess: (data: string) => {
       downloadFromData(data, filename);
-      setConvertLoading(false);
+      setdownloadLoading(false);
     },
   });
 
@@ -46,7 +52,7 @@ export default function ToolbarPanel() {
     pixelRatio: options.imageRatio,
     onSuccess: (data: string) => {
       downloadFromData(data, filename);
-      setConvertLoading(false);
+      setdownloadLoading(false);
     },
   });
 
@@ -56,8 +62,8 @@ export default function ToolbarPanel() {
     jpegRef(paperNode);
   }, [paperNode, jpegRef, pngRef]);
 
-  const convert = useCallback(() => {
-    setConvertLoading(true);
+  const download = useCallback(() => {
+    setdownloadLoading(true);
 
     resetPaperScale();
 
@@ -69,9 +75,30 @@ export default function ToolbarPanel() {
   }, [convertToJpeg, convertToPng, options.imageType]);
 
   return (
-    <div className="px-2 flex w-full items-center">
+    <div className="px-2 flex gap-1 w-full items-center">
       <TooltipProvider>
         <Menu />
+
+        <Separator orientation={"vertical"} className="h-6" />
+
+        <Tooltip>
+          <TooltipTrigger className="flex gap-1" asChild>
+            <Button
+              size={"icon"}
+              variant={"ghost"}
+              onClick={() => {
+                toast({
+                  title: "当前版本暂未实现该功能…",
+                });
+              }}
+            >
+              <Layers2Icon className="size-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>浏览预设模板</p>
+          </TooltipContent>
+        </Tooltip>
 
         <div className="mx-auto"></div>
 
@@ -133,15 +160,15 @@ export default function ToolbarPanel() {
         <Button
           size={"sm"}
           className="space-x-2 ml-2"
-          onClick={convert}
-          disabled={convertLoading}
+          onClick={download}
+          disabled={downloadLoading}
         >
-          {convertLoading ? (
+          {downloadLoading ? (
             <Loader2Icon className="size-4 animate-spin" />
           ) : (
             <ImageDownIcon className="size-4" />
           )}
-          <span>保存为图片</span>
+          <span>下载图片</span>
         </Button>
       </TooltipProvider>
     </div>

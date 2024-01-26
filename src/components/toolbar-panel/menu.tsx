@@ -1,8 +1,10 @@
 import { exit } from "@tauri-apps/api/process";
 import {
   BugIcon,
-  FileCode2Icon,
+  FileBoxIcon,
+  FileDownIcon,
   FileInputIcon,
+  FileOutputIcon,
   LogOutIcon,
   MenuIcon,
   RocketIcon,
@@ -23,6 +25,7 @@ import {
   $remoteVersion,
   checkAppUpdate,
   exportJSON,
+  exportJSONSuffix,
   importJSON,
 } from "@/store";
 import { useCallback } from "react";
@@ -48,18 +51,28 @@ export function Menu() {
       <Input
         id={"__import_data_file"}
         type="file"
+        accept={exportJSONSuffix}
         className="hidden"
         multiple={false}
         onInput={importPaper}
       />
+
+      <Input
+        id={"__import_template"}
+        type="file"
+        className="hidden"
+        multiple={false}
+        onInput={importPaper}
+      />
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size={"icon"} variant="outline">
+          <Button size={"icon"} variant="ghost">
             <MenuIcon />
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="w-56 ml-5">
+        <DropdownMenuContent className="w-56 ml-4 mt-1">
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <FileInputIcon className="mr-2 h-4 w-4" />
@@ -71,8 +84,26 @@ export function Menu() {
               </Label>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={exportPaper}>
-              <FileCode2Icon className="mr-2 h-4 w-4" />
+              <FileOutputIcon className="mr-2 h-4 w-4" />
               <span>导出配置</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuGroup>
+            <DropdownMenuItem disabled>
+              <FileBoxIcon className="mr-2 h-4 w-4" />
+              <Label
+                htmlFor="__import_template"
+                className="absolute left-8 top-0 right-0 bottom-0 flex items-center"
+              >
+                <span>打开模板</span>
+              </Label>
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled>
+              <FileDownIcon className="mr-2 h-4 w-4" />
+              <span>保存到预设</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
 

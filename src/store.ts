@@ -202,6 +202,8 @@ export type JSONData = {
 export const $importData = map<JSONData>();
 export const $exportData = map<JSONData>();
 
+export const exportJSONSuffix = ".report.json";
+
 export const importJSON = action(
   $importData,
   "import.json",
@@ -232,7 +234,7 @@ export const exportJSON = action($paperOptions, "export.json", (store) => {
   const options = store.get();
   const json = JSON.stringify({ ...options, data: $exportData.get() });
 
-  downloadAsFile(json, `${options.name}.json`);
+  downloadAsFile(json, `${options.name}${exportJSONSuffix}`);
 });
 
 export const $updateDialogOpened = atom(false);

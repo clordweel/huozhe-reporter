@@ -65,10 +65,10 @@ export default function CodeDialog({
           )}
         >
           <CodeIcon className="size-6" />
-          <DialogTitle className="!m-0">代码编辑</DialogTitle>
-          <DialogDescription className="text-slate-300">
-            解释说明……
-          </DialogDescription>
+          <DialogTitle className="!m-0">
+            {readOnly ? "代码浏览" : "代码编辑"}
+          </DialogTitle>
+          <DialogDescription className="text-slate-300"></DialogDescription>
 
           <div className="mx-auto" />
 
