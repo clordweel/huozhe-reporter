@@ -194,6 +194,49 @@ $$paperFilename.listen((name) => {
   document.head.querySelector("title")!.textContent = `报表设计: ${name}`;
 });
 
+export const $uploadScript = atom(`/**
+* 自定义上传触发执行脚本
+* @param data {string} 图片 Base64 数据
+* @param {{filename: string; options: {name: string; imageRatio: number; imageType: "jpeg" | "png"}}}
+*/
+async function reducer(data, { filename, options }) {
+  // 这里可以执行自定义的上传逻辑
+  alert(filename)
+  // await fetch('https://服务器上传地址', {method: 'POST', body: data})
+}
+
+// 使用 run 命令执行自定义函数
+run(reducer);
+`);
+
+export const uploadData = action(
+  $paperOptions,
+  "upload.paper",
+  (store, data: string) => {
+    const run = (
+      reducer: (
+        data: string,
+        report: { filename: string; options: PaperOptions }
+      ) => void
+    ) =>
+      reducer(data, { filename: $$paperFilename.get(), options: store.get() });
+
+    const code = $uploadScript.get();
+
+    try {
+      eval(`/**
+* @params data {string}
+*/${run.toString()};\n${code}`);
+    } catch (error) {
+      toast({
+        title: "执行脚本代码错误",
+        description: (error as Error).message,
+        variant: "destructive",
+      });
+    }
+  }
+);
+
 export type JSONData = {
   headerLogoUrl?: string;
   footerLogoUrl?: string;
@@ -202,7 +245,7 @@ export type JSONData = {
 export const $importData = map<JSONData>();
 export const $exportData = map<JSONData>();
 
-export const exportJSONSuffix = ".report.json";
+export const exportJSONSuffix = ".report";
 
 export const importJSON = action(
   $importData,
@@ -213,9 +256,17 @@ export const importJSON = action(
     try {
       const json = JSON.parse(text);
 
-      const { data, ...options } = json;
+      const { data, script, ...options } = json;
 
       if (!data) throw new Error("数据为空");
+
+      if (script && typeof script === "object") {
+        try {
+          $uploadScript.set(script.upload);
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
       store.set(data);
 
@@ -232,7 +283,11 @@ export const importJSON = action(
 
 export const exportJSON = action($paperOptions, "export.json", (store) => {
   const options = store.get();
-  const json = JSON.stringify({ ...options, data: $exportData.get() });
+  const json = JSON.stringify({
+    ...options,
+    script: { upload: $uploadScript.get().toString() },
+    data: $exportData.get(),
+  });
 
   downloadAsFile(json, `${options.name}${exportJSONSuffix}`);
 });

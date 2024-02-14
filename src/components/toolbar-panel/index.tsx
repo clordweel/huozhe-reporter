@@ -5,6 +5,7 @@ import {
   Layers2Icon,
   Loader2Icon,
   RefreshCcwDotIcon,
+  UploadCloudIcon,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useStore } from "@nanostores/react";
@@ -17,6 +18,7 @@ import {
   imageTypeItems,
   resetPaperScale,
   scaleItems,
+  uploadData,
 } from "@/store";
 import { useCallback, useEffect, useState } from "react";
 import { downloadFromData } from "@/lib/utils";
@@ -30,6 +32,9 @@ import {
 import { Separator } from "../ui/separator";
 import { Menu } from "./menu";
 import { toast } from "../ui/use-toast";
+import { atom } from "nanostores";
+
+const $imageReslover = atom<((data: string) => unknown) | null>(null);
 
 export default function ToolbarPanel() {
   const paperNode = useStore($paperNode);
@@ -38,22 +43,19 @@ export default function ToolbarPanel() {
 
   const filename = useStore($$paperFilename);
 
-  const [downloadLoading, setdownloadLoading] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   const [, convertToJpeg, jpegRef] = useToJpeg<HTMLDivElement>({
     pixelRatio: options.imageRatio,
-    onSuccess: (data: string) => {
-      downloadFromData(data, filename);
-      setdownloadLoading(false);
-    },
+    onSuccess: (data) => $imageReslover.get()?.(data),
+    onError: () => $imageReslover.set(null),
   });
 
   const [, convertToPng, pngRef] = useToPng<HTMLDivElement>({
     pixelRatio: options.imageRatio,
-    onSuccess: (data: string) => {
-      downloadFromData(data, filename);
-      setdownloadLoading(false);
-    },
+    onSuccess: (data) => $imageReslover.get()?.(data),
+    onError: () => $imageReslover.set(null),
   });
 
   useEffect(() => {
@@ -62,9 +64,7 @@ export default function ToolbarPanel() {
     jpegRef(paperNode);
   }, [paperNode, jpegRef, pngRef]);
 
-  const download = useCallback(() => {
-    setdownloadLoading(true);
-
+  const convert = useCallback(() => {
     resetPaperScale();
 
     if (options.imageType === "jpeg") {
@@ -73,6 +73,30 @@ export default function ToolbarPanel() {
       convertToPng();
     }
   }, [convertToJpeg, convertToPng, options.imageType]);
+
+  const download = useCallback(() => {
+    setDownloadLoading(true);
+    convert();
+
+    $imageReslover.set((data) => {
+      downloadFromData(data, filename);
+      setDownloadLoading(false);
+
+      $imageReslover.set(null);
+    });
+  }, [convert, filename]);
+
+  const upload = useCallback(() => {
+    setUploadLoading(true);
+    convert();
+
+    $imageReslover.set((data) => {
+      uploadData(data);
+      setUploadLoading(false);
+
+      $imageReslover.set(null);
+    });
+  }, [convert]);
 
   return (
     <div className="px-2 flex gap-1 w-full items-center">
@@ -160,6 +184,7 @@ export default function ToolbarPanel() {
         <Button
           size={"sm"}
           className="space-x-2 ml-2"
+          variant={"outline"}
           onClick={download}
           disabled={downloadLoading}
         >
@@ -168,7 +193,23 @@ export default function ToolbarPanel() {
           ) : (
             <ImageDownIcon className="size-4" />
           )}
-          <span>下载图片</span>
+          <span>下载</span>
+        </Button>
+
+        <Separator orientation={"vertical"} className="h-6 ml-2" />
+
+        <Button
+          size={"sm"}
+          className="space-x-2 ml-2"
+          onClick={upload}
+          disabled={uploadLoading}
+        >
+          {uploadLoading ? (
+            <Loader2Icon className="size-4 animate-spin" />
+          ) : (
+            <UploadCloudIcon className="size-4" />
+          )}
+          <span>上传</span>
         </Button>
       </TooltipProvider>
     </div>

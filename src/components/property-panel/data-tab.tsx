@@ -1,23 +1,23 @@
 import { TabsContent } from "@radix-ui/react-tabs";
 import { OptionsCode } from "../form-base";
 import { useStore } from "@nanostores/react";
-import { $exportData } from "@/store";
-import { ambiguous } from "@/lib/utils";
+import { $uploadScript } from "@/store";
 
 export default function DataTab() {
-  const data = useStore($exportData) as string;
-  const code = ambiguous(() => JSON.stringify(data, null, 2));
+  const code = useStore($uploadScript);
 
   return (
     <TabsContent value="data">
       <div className="w-full flex gap-1 flex-col">
         <OptionsCode
           id=""
-          label="JSON 导出数据预览"
-          language="json"
+          label="上传执行脚本"
+          language="javascript"
           height="60dvh"
-          wrap={false}
-          value={code instanceof Error ? "" : (code as string)}
+          wrap={true}
+          readOnly={false}
+          value={code}
+          onChange={(v) => $uploadScript.set(v)}
         />
       </div>
     </TabsContent>
