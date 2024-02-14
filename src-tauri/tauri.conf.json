@@ -57,7 +57,7 @@
       }
     },
     "security": {
-      "csp": ""
+      "csp": null
     },
     "updater": {
       "active": true,
