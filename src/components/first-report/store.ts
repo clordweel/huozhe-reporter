@@ -10,13 +10,19 @@ type Row = {
   number: string;
 };
 
-export type Table = {
+export type TableOld = {
   tip?: string;
   headings: string[];
   rows: Row[];
 };
 
-type Data = {
+export type Table = {
+  tip?: string;
+  headings: string[];
+  rows: string[][];
+};
+
+interface DataOld {
   updated?: number; // 更新时间戳
 
   title: string;
@@ -25,7 +31,7 @@ type Data = {
   heading: string;
   caption: string;
 
-  tables: Table[];
+  tables: TableOld[];
 
   shipmentCaption?: string;
   address: string;
@@ -33,7 +39,12 @@ type Data = {
 
   headerLogoUrl: string;
   footerLogoUrl: string;
-};
+}
+
+interface Data extends Omit<DataOld, "tables"> {
+  version: number;
+  tables: Table[];
+}
 
 export const $reportData = map<Data>();
 
@@ -77,12 +88,23 @@ export const addTableRow = action(
 
     tables[tableIndex].rows = [
       ...tables[tableIndex].rows,
-      {
-        name: "",
-        price: "",
-        number: "",
-      },
+      Array(tables[tableIndex].headings.length).fill(""),
     ];
+
+    store.setKey("tables", [...tables]);
+  }
+);
+
+export const addTableCol = action(
+  $reportData,
+  "add.table.col",
+  (store, tableIndex: number) => {
+    const tables = store.get().tables;
+
+    const table = tables[tableIndex];
+
+    table.headings = [...table.headings, ""];
+    table.rows = [...table.rows.map((row) => [...row, ""])];
 
     store.setKey("tables", [...tables]);
   }
@@ -102,6 +124,21 @@ export const removeTableRow = action(
   }
 );
 
+export const removeTableCol = action(
+  $reportData,
+  "add.table.row",
+  (store, tableIndex: number, index) => {
+    const tables = store.get().tables;
+
+    const table = tables[tableIndex];
+
+    table.headings = table.headings.filter((_, i) => i !== index);
+    table.rows = table.rows.map((row) => row.filter((_, i) => i !== index));
+
+    store.setKey("tables", [...tables]);
+  }
+);
+
 export const setTableRow = action(
   $reportData,
   "set.table.row",
@@ -109,22 +146,37 @@ export const setTableRow = action(
     store,
     tableIndex: number,
     rowIndex: number,
-    key: "name" | "price" | "number",
+    spanIndex: number,
     value: string
   ) => {
     const tables = store.get().tables;
 
-    tables[tableIndex].rows[rowIndex][key] = value;
+    tables[tableIndex].rows[rowIndex][spanIndex] = value;
 
     store.setKey("tables", [...tables]);
   }
 );
 
+const isOldData = (data: Data | DataOld): data is DataOld => {
+  return !("version" in data);
+};
+
+const convertOldData = (old: DataOld): Data => {
+  return {
+    ...old,
+    version: 1,
+    tables: old.tables.map((table) => ({
+      ...table,
+      rows: table.rows.map((row) => Object.values(row)),
+    })),
+  };
+};
+
 export const fetchReportData = action(
   $reportData,
   "fetch.report.data",
   async (store, url: string) => {
-    const result = await ambiguous(() => ofetch<Data>(url));
+    const result = await ambiguous(() => ofetch<Data | DataOld>(url));
 
     if (typeof result === "string") {
       const isJSON = ambiguous(() => JSON.parse(result));
@@ -152,7 +204,12 @@ export const fetchReportData = action(
       });
     }
 
-    store.set(result);
+    if (isOldData(result)) {
+      store.set(convertOldData(result));
+    } else {
+      store.set(result);
+    }
+    console.log(result, store.get());
 
     $paperOptions.setKey("name", result.title);
   }

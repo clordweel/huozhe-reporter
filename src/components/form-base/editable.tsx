@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils";
-import { FormEventHandler, useCallback, useState } from "react";
+import {
+  FormEventHandler,
+  useCallback,
+  useDeferredValue,
+  useState,
+} from "react";
 import { useUpdateEffect } from "react-use";
 
 interface Props {
@@ -19,7 +24,8 @@ export default function Editable({
   onInput,
   onFinish,
 }: Props) {
-  const [value, setValue] = useState(_value ?? (defaultValue || ""));
+  const [value_, setValue] = useState(_value ?? (defaultValue || ""));
+  const value = useDeferredValue(value_);
 
   useUpdateEffect(() => {
     if (value !== _value) setValue(_value ?? "");

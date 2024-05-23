@@ -1,10 +1,10 @@
 {
-    "version": "0.3.20",
-    "notes": "添加自定义上传脚本; 修改导出配置后缀;",
+    "version": "0.4.0",
+    "notes": "添加自定义上传脚本; 修改导出配置后缀; 手动新增表格行&列;",
     "platforms": {
         "windows-x86_64": {
             "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSY0pQU1J2NFZwSXNUTUZ0M2FFeDRiYmtuNVplS0k2dlpJSFRhQlFxREVTZEhrRWFkZ1lib3Q2RHZOZFBvSDZSY1hFWlFkMDdlR3VHV1FxdEZpV1lWMHlkYUlGOElwc3dzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA3ODgxNzQ0CWZpbGU66LSn6ICF5oql6KGo6K6+6K6hXzAuMy4yMF94NjQtc2V0dXAubnNpcy56aXAKVk5LMUlSNmlNZDZNcnJRaGRJazd4aE93eUpZSENaS2dnNy9oeUx1OWxMOUNlRjZKdjltSkhTa2thVmM0NXVEQW11d1V3Uk84Vzd4NmxNU29BYk5xQ3c9PQo=",
-            "url": "https://github.com/clordweel/huozhe-reporter/releases/download/v0.3.20/huozhe-reporter_0.3.20_x64-setup.nsis.zip"
+            "url": "https://github.com/clordweel/huozhe-reporter/releases/download/v0.4.0/huozhe-reporter_0.4.0_x64-setup.nsis.zip"
         }
     }
 }

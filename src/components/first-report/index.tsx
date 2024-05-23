@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 import PaperPrimitive from "../paper-primitive";
 import { useStore } from "@nanostores/react";
-import { DeleteIcon, ListPlusIcon, TruckIcon } from "lucide-react";
+import { TruckIcon, XIcon } from "lucide-react";
 import {
   $reportData,
   Table,
-  addTableRow,
+  removeTableCol,
   removeTableRow,
   setTable,
   setTableHeader,
@@ -13,6 +13,7 @@ import {
 } from "./store";
 import { Button } from "../ui/button";
 import Editable from "../form-base/editable";
+import { TableControl } from "../form-base/table-control";
 
 interface Props {
   className?: string;
@@ -199,12 +200,22 @@ function OrderTable({
         onFinish={(v) => setTable(tableIndex, "tip", v)}
       />
 
-      <header className="grid grid-cols-6 gap-1 relative -mr-8 pr-8 [&>button]:hover:flex">
+      <header
+        className={cn(
+          "grid gap-1 relative -mr-8 pr-8 [&>button]:hover:visible"
+        )}
+        style={{
+          gridTemplateColumns: `repeat(${
+            data.headings.length + 3
+          }, minmax(0, 1fr))`,
+        }}
+      >
         {data?.headings?.map((heading, index) => (
           <p
             key={index}
             className={cn(
               "h-8 text-sm bg-[var(--primaryColor)]",
+              "[&>button]:hover:visible relative",
               index === 0 ? "col-span-4 font-semibold" : "col-span-1"
             )}
           >
@@ -219,48 +230,54 @@ function OrderTable({
                   : "text-[var(--backgroundColor)] text-center"
               )}
             />
+
+            <Button
+              size={"icon"}
+              variant={"destructive"}
+              className={cn(
+                "absolute rounded-full size-4 -right-1 -top-2 z-10",
+                "invisible",
+                index === 0 && "hidden"
+              )}
+              onClick={() => removeTableCol(tableIndex, index)}
+            >
+              <XIcon />
+            </Button>
           </p>
         ))}
 
-        <Button
-          size={"icon"}
-          variant={"ghost"}
-          className="absolute -right-2 scale-75 -top-1 hidden"
-          onClick={() => addTableRow(tableIndex)}
-        >
-          <ListPlusIcon className="size-4" />
-        </Button>
+        <TableControl tableIndex={tableIndex} />
       </header>
 
       {data?.rows?.map((row, index) => (
         <section
-          className="grid grid-cols-6 gap-1 relative -mr-8 pr-8 [&>button]:hover:flex"
           key={index}
+          className="grid gap-1 relative -mr-8 pr-8 [&>button]:hover:flex"
+          style={{
+            gridTemplateColumns: `repeat(${
+              data.headings.length + 3
+            }, minmax(0, 1fr))`,
+          }}
         >
-          <p className="col-span-4 h-8 text-sm font-semibold">
-            <Editable
-              type="text"
-              value={row.name}
-              className="w-full pl-4 text-left text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
-              onFinish={(e) => setTableRow(tableIndex, index, "name", e)}
-            />
-          </p>
-          <p className="col-span-1 h-8 text-sm">
-            <Editable
-              type="text"
-              value={row.price}
-              className="w-full text-center text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
-              onFinish={(e) => setTableRow(tableIndex, index, "price", e)}
-            />
-          </p>
-          <p className="col-span-1 h-8 text-sm">
-            <Editable
-              type="text"
-              value={row.number}
-              className="w-full text-center text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]"
-              onFinish={(e) => setTableRow(tableIndex, index, "number", e)}
-            />
-          </p>
+          {row.map((cell, cellIndex) => (
+            <p
+              key={cell + cellIndex}
+              className={cn(
+                "h-8 text-sm font-semibold",
+                cellIndex === 0 ? "col-span-4 font-semibold" : "col-span-1"
+              )}
+            >
+              <Editable
+                type="text"
+                value={cell}
+                className={cn(
+                  "w-full text-[var(--textColor)] leading-8 border-b-2 border-[var(--primaryColor)]",
+                  cellIndex === 0 ? "pl-4 text-left" : "text-center"
+                )}
+                onFinish={(e) => setTableRow(tableIndex, index, cellIndex, e)}
+              />
+            </p>
+          ))}
 
           <Button
             size={"icon"}
@@ -268,7 +285,7 @@ function OrderTable({
             className="absolute -right-2 scale-75 -top-1 hidden"
             onClick={() => removeTableRow(tableIndex, index)}
           >
-            <DeleteIcon className="size-4 text-destructive" />
+            <XIcon className="size-6 text-destructive" />
           </Button>
         </section>
       ))}
