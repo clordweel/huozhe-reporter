@@ -68,6 +68,32 @@ export const setTable = action(
   }
 );
 
+export const addTable = action(
+  $reportData,
+  "add.table",
+  (store, tableIndex: number) => {
+    const tables = store.get().tables;
+
+    tables.splice(tableIndex, 0, {
+      tip: "",
+      headings: ["", "", ""],
+      rows: [["", "", ""]],
+    });
+
+    store.setKey("tables", [...tables]);
+  }
+);
+
+export const delTable = action(
+  $reportData,
+  "del.table",
+  (store, tableIndex: number) => {
+    const tables = store.get().tables;
+    tables.splice(tableIndex, 1);
+    store.setKey("tables", [...tables]);
+  }
+);
+
 export const setTableHeader = action(
   $reportData,
   "set.table.header",
@@ -112,7 +138,7 @@ export const addTableCol = action(
 
 export const removeTableRow = action(
   $reportData,
-  "add.table.row",
+  "remove.table.row",
   (store, tableIndex: number, rowIndex) => {
     const tables = store.get().tables;
 
@@ -126,7 +152,7 @@ export const removeTableRow = action(
 
 export const removeTableCol = action(
   $reportData,
-  "add.table.row",
+  "add.table.col",
   (store, tableIndex: number, index) => {
     const tables = store.get().tables;
 
