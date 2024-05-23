@@ -3,7 +3,7 @@
     "notes": "添加自定义上传脚本; 修改导出配置后缀; 手动新增表格行&列;",
     "platforms": {
         "windows-x86_64": {
-            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSY0pQU1J2NFZwSXNUTUZ0M2FFeDRiYmtuNVplS0k2dlpJSFRhQlFxREVTZEhrRWFkZ1lib3Q2RHZOZFBvSDZSY1hFWlFkMDdlR3VHV1FxdEZpV1lWMHlkYUlGOElwc3dzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA3ODgxNzQ0CWZpbGU66LSn6ICF5oql6KGo6K6+6K6hXzAuMy4yMF94NjQtc2V0dXAubnNpcy56aXAKVk5LMUlSNmlNZDZNcnJRaGRJazd4aE93eUpZSENaS2dnNy9oeUx1OWxMOUNlRjZKdjltSkhTa2thVmM0NXVEQW11d1V3Uk84Vzd4NmxNU29BYk5xQ3c9PQo=",
+            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSY0pQU1J2NFZwSW5HVnk0VjR5RzVSU0MwRkJ2SWVGV1ljTHA4REFmZWhnWFd1STBNUk95cTVLVDdZQnltUnF0UkhheFNxdWN2eGNYbHc1SjNzVjY4YnpLYWJ2SDZGOUFBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE2NDUzMDUyCWZpbGU66LSn6ICF5oql6KGo6K6+6K6hXzAuNC4wX3g2NC1zZXR1cC5uc2lzLnppcApFWlRnUjJzSmR2OVRXVUZjZGJzQzNRU3pZRE5NUjUyam9HZnBRaElxUkM4K3ZHOE5UR0lOZm5GQTBadklHNkhtUjlrZUI2ZVhxTUVYbjh2NGpCSUdBZz09Cg==",
             "url": "https://github.com/clordweel/huozhe-reporter/releases/download/v0.4.0/huozhe-reporter_0.4.0_x64-setup.nsis.zip"
         }
     }
